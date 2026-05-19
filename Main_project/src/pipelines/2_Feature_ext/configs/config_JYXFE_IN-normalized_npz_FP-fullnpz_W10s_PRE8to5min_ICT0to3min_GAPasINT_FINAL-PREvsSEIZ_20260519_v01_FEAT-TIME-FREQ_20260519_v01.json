@@ -1,0 +1,119 @@
+{
+    "feature_extraction_id": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01",
+    "labeling_experiment_id": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01",
+    "created_at": "2026-05-19T10:13:36",
+    "date_code": "20260519",
+    "version": "v01",
+    "patient_id": "JYXFE",
+    "previous_step": {
+        "step_name": "windowing_labeling",
+        "previous_labeling_config_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/2_Feature_ext/configs/config_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01.json",
+        "labeling_experiment_id": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01"
+    },
+    "paths": {
+        "input_npz_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Pre_processing/JYXFE_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260511/normalized_npz",
+        "input_pickle_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part1_labeling/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01",
+        "output_root_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features",
+        "output_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01"
+    },
+    "input_files": {
+        "df_labeled_all": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_df_labeled_all.pkl",
+        "df_ictalVspreictal": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_df_final_preictal_vs_seizure.pkl"
+    },
+    "input_paths": {
+        "df_labeled_all_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part1_labeling/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_df_labeled_all.pkl",
+        "df_ictalVspreictal_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part1_labeling/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_df_final_preictal_vs_seizure.pkl"
+    },
+    "windowing": {
+        "window_sec": 10
+    },
+    "labeling": {
+        "preictal_range_min": [
+            -8,
+            -5
+        ],
+        "ictal_range_min": [
+            0,
+            3
+        ],
+        "include_gap_as_interictal": true,
+        "class_mapping": {
+            "interictal": 0,
+            "preictal": 1,
+            "seizure": 2
+        },
+        "labeling_description": "Windows are labelled according to their temporal position relative to seizure onset. Preictal windows are defined by preictal_range_min. Ictal/seizure windows are defined by ictal_range_min. Gaps can optionally be labelled as interictal."
+    },
+    "filtering": {
+        "keep_only_preictal_seizure": true
+    },
+    "feature_extraction": {
+        "extract_features_all_windows": true,
+        "extract_features_final": true,
+        "extract_time_domain_features": true,
+        "extract_frequency_domain_features": true,
+        "extract_entropy_features": false,
+        "extract_connectivity_features": false,
+        "use_file_cache": true,
+        "allow_pickle": true
+    },
+    "feature_parameters": {
+        "frequency_bands": {
+            "delta": [
+                0.5,
+                4.0
+            ],
+            "theta": [
+                4.0,
+                8.0
+            ],
+            "alpha": [
+                8.0,
+                13.0
+            ],
+            "beta": [
+                13.0,
+                30.0
+            ],
+            "gamma": [
+                30.0,
+                40.0
+            ]
+        },
+        "welch": {
+            "nperseg": null,
+            "noverlap": null
+        },
+        "sample_entropy": {
+            "m": 2,
+            "r": 0.2
+        }
+    },
+    "output_files": {
+        "df_features_all": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_all.pkl",
+        "df_features_ictalVspreictal": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_ictalVspreictal.pkl",
+        "df_features_all_filename": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_all.pkl",
+        "df_features_ictalVspreictal_filename": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_ictalVspreictal.pkl",
+        "feature_summary_filename": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_feature_summary.csv"
+    },
+    "output_paths": {
+        "df_features_all_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_all.pkl",
+        "df_features_ictalVspreictal_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_ictalVspreictal.pkl",
+        "feature_summary_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_feature_summary.csv"
+    },
+    "naming": {
+        "labeling_experiment_id": "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01",
+        "feature_code": "TIME-FREQ",
+        "date_code": "20260519",
+        "version": "v01"
+    },
+    "pipeline_steps": {
+        "load_previous_labeling_config": true,
+        "load_input_pickles": true,
+        "load_npz_files": true,
+        "run_features_ictalVspreictal": true,
+        "run_features_all": true,
+        "save_outputs": true,
+        "save_feature_summary": true
+    }
+}

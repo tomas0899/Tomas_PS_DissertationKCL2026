@@ -186,7 +186,7 @@ def create_feature_extraction_config():
     previous_labeling_config_path = (
         "/home/tperezsanchez/FoundationModel_EEG_Dissertation/"
         "Main_project/src/pipelines/2_Feature_ext/configs/"
-        "config_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01.json"
+        "config_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01.json"
     )
 
     # ------------------------------------------------------

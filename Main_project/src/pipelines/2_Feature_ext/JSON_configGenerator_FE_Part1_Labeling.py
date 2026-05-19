@@ -198,10 +198,10 @@ def create_labeling_config():
     # ------------------------------------------------------
     labeling = {
         # Preictal window range in minutes before seizure onset
-        "preictal_range_min": [-6, -5],
+        "preictal_range_min": [-8, -5],
 
         # Ictal window range in minutes after seizure onset
-        "ictal_range_min": [0, 1],
+        "ictal_range_min": [0, 3],
 
         # Whether to label gaps as interictal class 0
         "include_gap_as_interictal": True,
