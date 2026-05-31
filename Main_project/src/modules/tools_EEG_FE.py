@@ -726,3 +726,472 @@ def extract_features_from_row_cached_2_7(row, npz_base_path, file_cache):
     full_row = {**row.to_dict(), **all_features}
 
     return full_row
+
+
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from scipy.stats import mannwhitneyu
+from matplotlib.backends.backend_pdf import PdfPages
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# 
+# Function #8
+
+def plot_mannwhitney_feature_violins_2_8(
+    feature_cols,
+    group_1_PREICTAL,
+    group_2_SEIZURE,
+    pdf_output_path,
+    alpha=0.05,
+    show_plots=False
+):
+    """
+    Generate violin plots for each feature comparing preictal vs ictal groups,
+    perform Mann-Whitney U tests, and save all plots into a multi-page PDF.
+
+    Parameters
+    ----------
+    feature_cols : list
+        List of feature columns to analyse.
+
+    group_1_PREICTAL : pd.DataFrame
+        DataFrame containing preictal samples.
+
+    group_2_SEIZURE : pd.DataFrame
+        DataFrame containing ictal/seizure samples.
+
+    pdf_output_path : str or Path
+        Output path where the multi-page PDF will be saved.
+
+    alpha : float, default=0.05
+        Significance threshold for the Mann-Whitney U test.
+
+    show_plots : bool, default=False
+        If True, show each plot while running.
+
+    Returns
+    -------
+    df_mannwhitney_results_violin : pd.DataFrame
+        Mann-Whitney test results sorted by p-value.
+    """
+
+    # Colors for each class
+    palette = {
+        "preictal": "skyblue",
+        "ictal": "salmon"
+    }
+
+    # Store Mann-Whitney results
+    mannwhitney_results_violin = []
+
+    # Create output folder if needed
+    pdf_output_path = Path(pdf_output_path)
+    pdf_output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Open PDF file
+    with PdfPages(pdf_output_path) as pdf:
+
+        # -------------------------------
+        # Loop through all feature columns
+        # -------------------------------
+        for feature in feature_cols:
+
+            print(f"Plotting feature: {feature}")
+
+            # -------------------------------
+            # Check if feature exists in both groups
+            # -------------------------------
+            if feature not in group_1_PREICTAL.columns:
+                print(f"Skipping {feature}: not found in preictal dataframe")
+                continue
+
+            if feature not in group_2_SEIZURE.columns:
+                print(f"Skipping {feature}: not found in ictal dataframe")
+                continue
+
+            # -------------------------------
+            # Extract values from both groups
+            # -------------------------------
+            preictal_values = group_1_PREICTAL[feature]
+            ictal_values = group_2_SEIZURE[feature]
+
+            # Convert to numeric and remove NaN / infinite values
+            preictal_values = pd.to_numeric(preictal_values, errors="coerce")
+            ictal_values = pd.to_numeric(ictal_values, errors="coerce")
+
+            preictal_values = (
+                preictal_values
+                .replace([np.inf, -np.inf], np.nan)
+                .dropna()
+            )
+
+            ictal_values = (
+                ictal_values
+                .replace([np.inf, -np.inf], np.nan)
+                .dropna()
+            )
+
+            # -------------------------------
+            # Skip feature if one group has no valid values
+            # -------------------------------
+            if len(preictal_values) == 0 or len(ictal_values) == 0:
+                print(f"Skipping {feature}: not enough valid values")
+                continue
+
+            # -------------------------------
+            # Create long-format dataframe for plotting
+            # -------------------------------
+            df_plot = pd.DataFrame({
+                "value": pd.concat([preictal_values, ictal_values], axis=0),
+                "label": (
+                    ["preictal"] * len(preictal_values) +
+                    ["ictal"] * len(ictal_values)
+                )
+            })
+
+            # -------------------------------
+            # Mann-Whitney U test
+            # -------------------------------
+            stat, p_value = mannwhitneyu(
+                preictal_values,
+                ictal_values,
+                alternative="two-sided"
+            )
+
+            if p_value < alpha:
+                test_result = "Significant difference"
+            else:
+                test_result = "No significant difference"
+
+            # Save statistical result
+            mannwhitney_results_violin.append({
+                "feature": feature,
+                "n_preictal": len(preictal_values),
+                "n_ictal": len(ictal_values),
+                "mannwhitney_U": stat,
+                "p_value": p_value,
+                "result": test_result
+            })
+
+            # -------------------------------
+            # Violin plot
+            # -------------------------------
+            fig, ax = plt.subplots(figsize=(6, 5))
+
+            sns.violinplot(
+                data=df_plot,
+                x="label",
+                y="value",
+                hue="label",
+                palette=palette,
+                order=["preictal", "ictal"],
+                legend=False,
+                inner="box",
+                cut=0,
+                ax=ax
+            )
+
+            ax.set_title(
+                f"{feature}\n"
+                f"Mann-Whitney U = {stat:.2f}, p = {p_value:.3e}\n"
+                f"{test_result}"
+            )
+
+            ax.set_xlabel("Class label")
+            ax.set_ylabel(feature)
+
+            plt.tight_layout()
+
+            # Save current figure as one page in the PDF
+            pdf.savefig(fig, bbox_inches="tight")
+
+            if show_plots:
+                plt.show()
+
+            plt.close(fig)
+
+    # -------------------------------
+    # Convert statistical results to dataframe
+    # -------------------------------
+    df_mannwhitney_results_violin = pd.DataFrame(mannwhitney_results_violin)
+
+    # Sort by p-value
+    if not df_mannwhitney_results_violin.empty:
+        df_mannwhitney_results_violin = (
+            df_mannwhitney_results_violin
+            .sort_values("p_value")
+            .reset_index(drop=True)
+        )
+
+    print(f"PDF saved to: {pdf_output_path}")
+
+    return df_mannwhitney_results_violin
+
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# 
+# Function #9
+
+def plot_top_mannwhitney_features_2_9(
+    df_mannwhitney_results,
+    top_n=20,
+    pdf_output_path=None,
+    show_plot=True
+):
+    """
+    Plot the top N features ranked by Mann-Whitney p-value using -log10(p-value).
+
+    Parameters
+    ----------
+    df_mannwhitney_results : pd.DataFrame
+        DataFrame containing Mann-Whitney results.
+        It must contain at least the columns: 'feature' and 'p_value'.
+
+    top_n : int, default=20
+        Number of top features to plot.
+
+    pdf_output_path : str or Path, optional
+        If provided, the plot will be saved as a PDF.
+
+    show_plot : bool, default=True
+        If True, display the plot.
+
+    Returns
+    -------
+    df_top : pd.DataFrame
+        DataFrame with the top N ranked features.
+    """
+
+    # -------------------------------
+    # Copy results
+    # -------------------------------
+    df_ranked = df_mannwhitney_results.copy()
+
+    # -------------------------------
+    # Check required columns
+    # -------------------------------
+    required_cols = ["feature", "p_value"]
+
+    for col in required_cols:
+        if col not in df_ranked.columns:
+            raise ValueError(f"Missing required column: {col}")
+
+    # -------------------------------
+    # Sort by p-value
+    # -------------------------------
+    df_ranked = df_ranked.sort_values("p_value").reset_index(drop=True)
+
+    # -------------------------------
+    # Add -log10(p-value)
+    # -------------------------------
+    df_ranked["minus_log10_p"] = -np.log10(df_ranked["p_value"])
+
+    # -------------------------------
+    # Select top N features
+    # -------------------------------
+    df_top = df_ranked.head(top_n)
+
+    # -------------------------------
+    # Plot
+    # -------------------------------
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    sns.barplot(
+        data=df_top,
+        x="minus_log10_p",
+        y="feature",
+        ax=ax
+    )
+
+    ax.set_xlabel("-log10(p-value)")
+    ax.set_ylabel("Feature")
+    ax.set_title(f"Top {top_n} features ranked by Mann-Whitney p-value")
+
+    plt.tight_layout()
+
+    # -------------------------------
+    # Save plot as PDF if requested
+    # -------------------------------
+    if pdf_output_path is not None:
+        pdf_output_path = Path(pdf_output_path)
+        pdf_output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        fig.savefig(pdf_output_path, format="pdf", bbox_inches="tight")
+        print(f"PDF saved to: {pdf_output_path}")
+
+    if show_plot:
+        plt.show()
+
+    plt.close(fig)
+
+    return df_top
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# 
+# Function #10
+
+
+def plot_top_features_by_channel(
+    df_mannwhitney_results,
+    top_n=20,
+    channel_patterns=None,
+    pdf_output_path=None,
+    show_plot=True
+):
+    """
+    Plot top N base features ranked by Mann-Whitney p-value,
+    separated by EEG channel.
+
+    Parameters
+    ----------
+    df_mannwhitney_results : pd.DataFrame
+        DataFrame containing Mann-Whitney results.
+        It must contain at least the columns: 'feature' and 'p_value'.
+
+    top_n : int, default=20
+        Number of top base features to plot.
+
+    channel_patterns : list, optional
+        List of channel name patterns to extract from feature names.
+
+    pdf_output_path : str or Path, optional
+        If provided, the plot will be saved as a PDF.
+
+    show_plot : bool, default=True
+        If True, display the plot.
+
+    Returns
+    -------
+    df_top : pd.DataFrame
+        Filtered dataframe containing only the top N base features.
+
+    df_ranked : pd.DataFrame
+        Full ranked dataframe with added columns:
+        'minus_log10_p', 'channel', and 'base_feature'.
+    """
+
+    # -------------------------------
+    # Default channel patterns
+    # -------------------------------
+    if channel_patterns is None:
+        channel_patterns = [
+            "EEG_SQ_D_SQ_C",
+            "EEG_SQ_P_SQ_C"
+        ]
+
+    # -------------------------------
+    # Copy results
+    # -------------------------------
+    df_ranked = df_mannwhitney_results.copy()
+
+    # -------------------------------
+    # Check required columns
+    # -------------------------------
+    required_cols = ["feature", "p_value"]
+
+    for col in required_cols:
+        if col not in df_ranked.columns:
+            raise ValueError(f"Missing required column: {col}")
+
+    # -------------------------------
+    # Sort by p-value
+    # -------------------------------
+    df_ranked = df_ranked.sort_values("p_value").reset_index(drop=True)
+
+    # -------------------------------
+    # Add -log10(p-value)
+    # -------------------------------
+    df_ranked["minus_log10_p"] = -np.log10(df_ranked["p_value"])
+
+    # -------------------------------
+    # Helper functions
+    # -------------------------------
+    def extract_channel(feature_name):
+        for ch in channel_patterns:
+            if ch in feature_name:
+                return ch
+        return "unknown"
+
+    def extract_base_feature(feature_name):
+        base = feature_name
+        for ch in channel_patterns:
+            base = base.replace(f"_{ch}", "")
+            base = base.replace(ch, "")
+        return base.rstrip("_")
+
+    # -------------------------------
+    # Extract channel and base feature
+    # -------------------------------
+    df_ranked["channel"] = df_ranked["feature"].apply(extract_channel)
+    df_ranked["base_feature"] = df_ranked["feature"].apply(extract_base_feature)
+
+    print("Ranked dataframe shape:", df_ranked.shape)
+
+    # -------------------------------
+    # Select top N base features
+    # -------------------------------
+    top_base_features = (
+        df_ranked
+        .groupby("base_feature")["p_value"]
+        .min()
+        .sort_values()
+        .head(top_n)
+        .index
+    )
+
+    df_top = df_ranked[df_ranked["base_feature"].isin(top_base_features)].copy()
+
+    # Sort plot by significance
+    df_top["base_feature"] = pd.Categorical(
+        df_top["base_feature"],
+        categories=top_base_features,
+        ordered=True
+    )
+
+    df_top = df_top.sort_values("base_feature")
+
+    # -------------------------------
+    # Barplot: top features separated by channel
+    # -------------------------------
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    sns.barplot(
+        data=df_top,
+        x="minus_log10_p",
+        y="base_feature",
+        hue="channel",
+        ax=ax
+    )
+
+    ax.set_xlabel("-log10(p-value)")
+    ax.set_ylabel("Feature")
+    ax.set_title(
+        f"Top {top_n} features ranked by Mann-Whitney p-value, separated by channel"
+    )
+
+    plt.tight_layout()
+
+    # -------------------------------
+    # Save plot as PDF if requested
+    # -------------------------------
+    if pdf_output_path is not None:
+        pdf_output_path = Path(pdf_output_path)
+        pdf_output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        fig.savefig(pdf_output_path, format="pdf", bbox_inches="tight")
+        print(f"PDF saved to: {pdf_output_path}")
+
+    if show_plot:
+        plt.show()
+
+    plt.close(fig)
+
+    return df_top, df_ranked
