@@ -24,7 +24,7 @@ output_dir = Path(
 )
 
 config_output_dir = Path(
-    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/configs/Feature_ext/Part3_Feat_stats"
+    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/2_Feature_ext/configs"
 )
 
 version = "v01"

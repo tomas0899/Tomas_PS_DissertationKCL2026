@@ -1,0 +1,58 @@
+{
+    "config_metadata": {
+        "pipeline_name": "2_4_Feature_extraction_Stats_PIPELINE",
+        "analysis_type": "feature_statistics_mannwhitney",
+        "patient_id": "XB47Y",
+        "experiment_id": "XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01",
+        "date_generated": "20260531",
+        "version": "v01"
+    },
+    "inputs": {
+        "input_pkl_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_df_features_ictalVspreictal.pkl"
+    },
+    "outputs": {
+        "output_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats",
+        "violin_pdf_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_VIOLIN-MANNWHITNEY_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.pdf",
+        "top20_pdf_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_TOP20-MANNWHITNEY-BARPLOT_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.pdf",
+        "top20_by_channel_pdf_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_TOP20-BY-CHANNEL-BARPLOT_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.pdf",
+        "mannwhitney_csv_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_MANNWHITNEY-RESULTS_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.csv",
+        "top20_csv_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_TOP20-MANNWHITNEY-FEATURES_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.csv",
+        "top20_by_channel_csv_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_TOP20-BY-CHANNEL-FEATURES_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.csv",
+        "ranked_features_csv_path": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats/XB47Y_RANKED-FEATURES-BY-CHANNEL_XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_20260531_v01.csv"
+    },
+    "label_settings": {
+        "class_label_column": "class_label",
+        "class_labels": {
+            "preictal": 1,
+            "seizure": 2
+        }
+    },
+    "feature_selection": {
+        "exclude_cols": [
+            "window_id",
+            "start_sample",
+            "end_sample",
+            "fs",
+            "n_channels",
+            "class_label",
+            "window_sec"
+        ]
+    },
+    "statistics": {
+        "test": "mannwhitneyu",
+        "alternative": "two-sided",
+        "alpha": 0.05
+    },
+    "plot_settings": {
+        "top_n": 20,
+        "show_plots": false,
+        "channel_patterns": [
+            "EEG_SQ_D_SQ_C",
+            "EEG_SQ_P_SQ_C"
+        ],
+        "palette": {
+            "preictal": "skyblue",
+            "ictal": "salmon"
+        }
+    }
+}
