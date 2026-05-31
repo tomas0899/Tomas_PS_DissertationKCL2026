@@ -1039,7 +1039,7 @@ def plot_top_mannwhitney_features_2_9(
 # Function #10
 
 
-def plot_top_features_by_channel(
+def plot_top_features_by_channel_2_10(
     df_mannwhitney_results,
     top_n=20,
     channel_patterns=None,
