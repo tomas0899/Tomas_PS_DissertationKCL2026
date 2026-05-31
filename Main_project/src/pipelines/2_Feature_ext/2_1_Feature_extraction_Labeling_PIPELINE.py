@@ -26,7 +26,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Now import works
-from src.modules import tools_EEG as TEEG
+from src.modules import tools_EEG_FE as TEEG_FE
 #==========================
 #==========================
 #==========================
@@ -204,7 +204,7 @@ window_sec = config["windowing"]["window_sec"]
 
 print(f"Window size: {window_sec} seconds")
 
-df_windows = TEEG.create_eeg_windows_2_3(
+df_windows = TEEG_FE.create_eeg_windows_2_3(
     df,
     window_sec=window_sec
 )
@@ -219,7 +219,7 @@ df_windows[df_windows["seizure_onsets"].apply(lambda x: not pd.isna(x).all() if 
 #==========================
 #==========================
 # 6. Labeling
-df_labeled = TEEG.initialize_labeled_dataframe_2_5_1(df_windows)
+df_labeled = TEEG_FE.initialize_labeled_dataframe_2_5_1(df_windows)
 
 preictal_range_min = tuple(config["labeling"]["preictal_range_min"])
 ictal_range_min = tuple(config["labeling"]["ictal_range_min"])
@@ -229,7 +229,7 @@ print(f"Preictal range: {preictal_range_min} minutes")
 print(f"Ictal range: {ictal_range_min} minutes")
 print(f"Include gap as interictal: {include_gap_as_interictal}")
 
-df_labeled = TEEG.apply_window_labeling_2_5_2(
+df_labeled = TEEG_FE.apply_window_labeling_2_5_2(
     df_labeled=df_labeled,
     df_recordings=df,
     preictal_range_min=preictal_range_min,
@@ -244,7 +244,7 @@ keep_only_preictal_seizure = config["filtering"]["keep_only_preictal_seizure"]
 
 print(f"Keep only preictal + seizure: {keep_only_preictal_seizure}")
 
-df_final = TEEG.filter_preictal_seizure_2_5_3(
+df_final = TEEG_FE.filter_preictal_seizure_2_5_3(
     df_labeled,
     keep_only_preictal_seizure=keep_only_preictal_seizure
 )

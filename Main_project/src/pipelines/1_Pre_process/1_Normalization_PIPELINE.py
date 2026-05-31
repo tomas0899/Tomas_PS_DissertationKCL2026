@@ -21,7 +21,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Now import works
-from src.modules import tools_EEG as TEEG
+from src.modules import tools_EEG_Preprocess as TEEG_PR
 
 
 # ==========================================================
@@ -130,7 +130,7 @@ if len(all_files) == 0:
 #==========================
 # 3. Calculate mean and std per channel
 if compute_stats:
-    ch_mean, ch_std, ch_count, skipped = TEEG.compute_global_channel_stats_1_15(all_files)
+    ch_mean, ch_std, ch_count, skipped = TEEG_PR_PR.compute_global_channel_stats_1_15(all_files)
 
     print("Global channel statistics computed")
     print("Channel means:", ch_mean)
@@ -145,7 +145,7 @@ if compute_stats:
 if apply_normalization:
     normalized_output_dir.mkdir(parents=True, exist_ok=True)
 
-    stats_npz_path, summary = TEEG.apply_global_channel_normalization_1_16(
+    stats_npz_path, summary = TEEG_PR.apply_global_channel_normalization_1_16(
         all_files=all_files,
         ch_mean=ch_mean,
         ch_std=ch_std,
@@ -161,7 +161,7 @@ if apply_normalization:
 #==========================
 # 5. Sanity Check
 if run_sanity_check:
-    df_check = TEEG.sanity_check_global_zscore_npz_1_14(
+    df_check = TEEG_PR.sanity_check_global_zscore_npz_1_14(
         original_dir=input_npz_dir,
         normalized_dir=normalized_output_dir
     )
@@ -225,7 +225,7 @@ if run_visualization:
     for npz_path in files_to_visualize:
         print(f"\nProcessing: {npz_path.name}")
 
-        TEEG.visualize_seizure_windows_from_npz_1_10VNormal(
+        TEEG_PR.visualize_seizure_windows_from_npz_1_10VNormal(
             npz_path=str(npz_path),
             channel_idx_1=channel_idx_1,
             channel_idx_2=channel_idx_2,

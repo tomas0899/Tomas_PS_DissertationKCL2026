@@ -20,7 +20,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Now import works
-from src.modules import tools_EEG as TEEG
+from src.modules import tools_EEG_Preprocess as TEEG_PR
 #==========================
 #==========================
 #==========================
@@ -87,7 +87,7 @@ print("viz_output_dir:", viz_output_dir)
 # 1. Open/load .mat files
 # open all the .mat files from the folder of a single patient
 # create a df with all the information
-df_patient, error_list = TEEG.process_eeg_mat_files_1_1(input_dir)
+df_patient, error_list = TEEG_PR.process_eeg_mat_files_1_1(input_dir)
 #print(df_patient.head())
 #==========================
 #==========================
@@ -95,7 +95,7 @@ df_patient, error_list = TEEG.process_eeg_mat_files_1_1(input_dir)
 # 1.2 Visualize distribution of daily accumulated recording time
 if histogram_cfg.get("save_pdf", True):
 
-    TEEG.plot_daily_recording_histogram_1_2(
+    TEEG_PR.plot_daily_recording_histogram_1_2(
         df_patient,
         patient_id=patient_id,
         pdf_output_path=histogram_pdf_output_path
@@ -103,7 +103,7 @@ if histogram_cfg.get("save_pdf", True):
 
 else:
 
-    TEEG.plot_daily_recording_histogram_1_2(
+    TEEG_PR.plot_daily_recording_histogram_1_2(
         df_patient,
         patient_id=patient_id,
         pdf_output_path=None
@@ -112,13 +112,13 @@ else:
 #==========================
 #==========================
 # 1.3 Gather seizure data from CSV
-df_sq, df_di = TEEG.preprocess_seizure_data_1_3(seizure_file)
+df_sq, df_di = TEEG_PR.preprocess_seizure_data_1_3(seizure_file)
 # 1.3.2 Processing summary
 summary_cfg = config["recording_onset_summary"]
 
 if summary_cfg.get("save_csv", True):
 
-    df_recording_onset_summary = TEEG.save_recording_onset_summary_1_2_1(
+    df_recording_onset_summary = TEEG_PR.save_recording_onset_summary_1_2_1(
         df_files=df_patient,
         df_onsets=df_sq,
         patient_id=patient_id,
@@ -132,7 +132,7 @@ if summary_cfg.get("save_csv", True):
 #==========================
 #==========================
 # 1.4 Mapping of seizures in all mat files
-df_matches = TEEG.plot_eeg_availability_with_onsetsV2_1_5(
+df_matches = TEEG_Pr.plot_eeg_availability_with_onsetsV2_1_5(
     df_files=df_patient, 
     df_onsets=df_sq, 
     pdf_output_path=map_output_path,
@@ -221,7 +221,7 @@ os.makedirs(viz_output_dir, exist_ok=True)
  # TF:              (K,)   recording end timestamps (ISO format) from
                            #df_matches (may repeat if multiple matches exist)
 
-TEEG.full_recording_from_matfiles_1_9_V2(
+TEEG_PR.full_recording_from_matfiles_1_9_V2(
     input_dir=input_dir,
     output_dir=output_dir,
     files_to_process=files_to_process,
@@ -253,7 +253,7 @@ for file_name in sorted(os.listdir(directory)):
         print(f"\nProcessing: {file_name}")
 
         
-        TEEG.visualize_seizure_windows_from_npz_1_10V3(
+        TEEG_Pr.visualize_seizure_windows_from_npz_1_10V3(
             npz_path=full_path,
             channel_idx_1=channel_idx_1,
             channel_idx_2=channel_idx_2,

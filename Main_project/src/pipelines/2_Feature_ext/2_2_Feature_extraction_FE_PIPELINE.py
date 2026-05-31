@@ -26,7 +26,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Now import works
-from src.modules import tools_EEG as TEEG
+from src.modules import tools_EEG_FE as TEEG_FE
 #==========================
 #==========================
 #==========================
@@ -81,7 +81,7 @@ if config["pipeline_steps"]["run_features_ictalVspreictal"]:
     file_cache = {}
 
     for idx, row in df_final_ictalVspreictal.iterrows():
-        full_row = TEEG.extract_features_from_row_cached_2_7(
+        full_row = TEEG_FE.extract_features_from_row_cached_2_7(
             row,
             npz_base_path=npz_base_path,
             file_cache=file_cache
@@ -107,7 +107,7 @@ if config["pipeline_steps"]["run_features_all"]:
     file_cache = {}
 
     for idx, row in df_labeled_all.iterrows():
-        full_row = TEEG.extract_features_from_row_cached_2_7(
+        full_row = TEEG_FE.extract_features_from_row_cached_2_7(
             row,
             npz_base_path=npz_base_path,
             file_cache=file_cache
