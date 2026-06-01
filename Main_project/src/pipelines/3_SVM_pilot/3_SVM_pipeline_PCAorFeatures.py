@@ -272,7 +272,7 @@ print("n =", n)
 # Each split must contain both classes.
 
 
-train_end, val_end, best_score = find_best_temporal_split_3_2(
+train_end, val_end, best_score = TEEG_mod.find_best_temporal_split_3_2(
     y=y,
     ideal_train=0.70,
     ideal_val=0.15,
@@ -345,7 +345,7 @@ print(
 # 15. TRAIN SVM MODEL WITH TEMPORAL GRID SEARCH
 # ============================================================
 
-best_model_f1, grid_f1 = train_svm_gridsearch(
+best_model_f1, grid_f1 = TEEG_mod.train_svm_gridsearch_3_3(
     X_train=X_train,
     y_train=y_train,
     n_splits=4,
@@ -366,7 +366,7 @@ class_names = ["preictal", "seizure"]
 # This assumes that evaluate_and_plot() was defined previously.
 # If you added patient_id to that function, pass it here.
 
-val_results = evaluate_and_plot_3_1(
+val_results = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_f1,
     X_data=X_val,
     y_true=y_val,
@@ -379,7 +379,7 @@ val_results = evaluate_and_plot_3_1(
 )
 
 
-test_results = evaluate_and_plot_3_1(
+test_results = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_f1,
     X_data=X_test,
     y_true=y_test,
