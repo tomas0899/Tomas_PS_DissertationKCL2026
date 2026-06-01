@@ -749,7 +749,8 @@ def plot_mannwhitney_feature_violins_2_8(
     group_2_SEIZURE,
     pdf_output_path,
     alpha=0.05,
-    show_plots=False
+    show_plots=False,
+    patient_id=None
 ):
     """
     Generate violin plots for each feature comparing preictal vs ictal groups,
@@ -774,6 +775,9 @@ def plot_mannwhitney_feature_violins_2_8(
 
     show_plots : bool, default=False
         If True, show each plot while running.
+
+    patient_id : str, optional
+        Patient ID to add to each plot title.
 
     Returns
     -------
@@ -897,8 +901,16 @@ def plot_mannwhitney_feature_violins_2_8(
                 ax=ax
             )
 
+            # -------------------------------
+            # Plot title with optional patient ID
+            # -------------------------------
+            if patient_id is not None:
+                title_prefix = f"Patient: {patient_id} | {feature}"
+            else:
+                title_prefix = feature
+
             ax.set_title(
-                f"{feature}\n"
+                f"{title_prefix}\n"
                 f"Mann-Whitney U = {stat:.2f}, p = {p_value:.3e}\n"
                 f"{test_result}"
             )
@@ -938,12 +950,12 @@ def plot_mannwhitney_feature_violins_2_8(
 #=================================================================================
 # 
 # Function #9
-
 def plot_top_mannwhitney_features_2_9(
     df_mannwhitney_results,
     top_n=20,
     pdf_output_path=None,
-    show_plot=True
+    show_plot=True,
+    patient_id=None
 ):
     """
     Plot the top N features ranked by Mann-Whitney p-value using -log10(p-value).
@@ -962,6 +974,9 @@ def plot_top_mannwhitney_features_2_9(
 
     show_plot : bool, default=True
         If True, display the plot.
+
+    patient_id : str, optional
+        Patient ID to add to the plot title.
 
     Returns
     -------
@@ -1012,7 +1027,18 @@ def plot_top_mannwhitney_features_2_9(
 
     ax.set_xlabel("-log10(p-value)")
     ax.set_ylabel("Feature")
-    ax.set_title(f"Top {top_n} features ranked by Mann-Whitney p-value")
+
+    # -------------------------------
+    # Plot title with optional patient ID
+    # -------------------------------
+    base_title = f"Top {top_n} features ranked by Mann-Whitney p-value"
+
+    if patient_id is not None:
+        full_title = f"{base_title} | Patient: {patient_id}"
+    else:
+        full_title = base_title
+
+    ax.set_title(full_title)
 
     plt.tight_layout()
 
@@ -1038,13 +1064,13 @@ def plot_top_mannwhitney_features_2_9(
 # 
 # Function #10
 
-
 def plot_top_features_by_channel_2_10(
     df_mannwhitney_results,
     top_n=20,
     channel_patterns=None,
     pdf_output_path=None,
-    show_plot=True
+    show_plot=True,
+    patient_id=None
 ):
     """
     Plot top N base features ranked by Mann-Whitney p-value,
@@ -1067,6 +1093,9 @@ def plot_top_features_by_channel_2_10(
 
     show_plot : bool, default=True
         If True, display the plot.
+
+    patient_id : str, optional
+        Patient ID to add to the plot title.
 
     Returns
     -------
@@ -1173,9 +1202,21 @@ def plot_top_features_by_channel_2_10(
 
     ax.set_xlabel("-log10(p-value)")
     ax.set_ylabel("Feature")
-    ax.set_title(
-        f"Top {top_n} features ranked by Mann-Whitney p-value, separated by channel"
+
+    # -------------------------------
+    # Plot title with optional patient ID
+    # -------------------------------
+    base_title = (
+        f"Top {top_n} features ranked by Mann-Whitney p-value, "
+        f"separated by channel"
     )
+
+    if patient_id is not None:
+        full_title = f"{base_title} | Patient: {patient_id}"
+    else:
+        full_title = base_title
+
+    ax.set_title(full_title)
 
     plt.tight_layout()
 
