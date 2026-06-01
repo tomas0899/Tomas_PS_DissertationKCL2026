@@ -1,7 +1,8 @@
 import numpy as np
+import re
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from pathlib import Path
 from sklearn.metrics import (
     classification_report,
     confusion_matrix,
@@ -9,6 +10,10 @@ from sklearn.metrics import (
     balanced_accuracy_score,
     f1_score
 )
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 
 #TOOLS EEG MODELS:
 #=================================================================================
