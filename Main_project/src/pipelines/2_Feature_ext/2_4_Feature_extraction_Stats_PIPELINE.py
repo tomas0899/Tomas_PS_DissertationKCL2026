@@ -92,7 +92,7 @@ top_n = config["plot_settings"]["top_n"]
 show_plots = config["plot_settings"]["show_plots"]
 
 channel_patterns = config["plot_settings"]["channel_patterns"]
-
+patient_id = config["config_metadata"]["patient_id"]
 
 # ===============================
 # 0.4 Validate input and output paths
@@ -203,7 +203,8 @@ df_mannwhitney_results_violin = TEEG_FE.plot_mannwhitney_feature_violins_2_8(
     group_2_SEIZURE=group_2_SEIZURE,
     pdf_output_path=violin_pdf_path,
     alpha=alpha,
-    show_plots=show_plots
+    show_plots=show_plots,
+    patient_id=patient_id
 )
 
 df_mannwhitney_results_violin.to_csv(
@@ -223,7 +224,8 @@ df_top_mannwhitney_features = TEEG_FE.plot_top_mannwhitney_features_2_9(
     df_mannwhitney_results=df_mannwhitney_results_violin,
     top_n=top_n,
     pdf_output_path=top20_pdf_path,
-    show_plot=show_plots
+    show_plot=show_plots,
+    patient_id=patient_id
 )
 
 df_top_mannwhitney_features.to_csv(
@@ -239,12 +241,13 @@ print(top20_csv_path)
 # 6. Top N by channel
 # ===============================
 
-df_top_by_channel, df_ranked = TEEG_FE.plot_top_features_by_channel_2_10(
+df_top_by_channel, df_ranked = df_top_by_channel, df_ranked = TEEG_FE.plot_top_features_by_channel_2_10(
     df_mannwhitney_results=df_mannwhitney_results_violin,
     top_n=top_n,
     channel_patterns=channel_patterns,
     pdf_output_path=top20_by_channel_pdf_path,
-    show_plot=show_plots
+    show_plot=show_plots,
+    patient_id=patient_id
 )
 
 df_top_by_channel.to_csv(
