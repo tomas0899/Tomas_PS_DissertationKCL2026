@@ -199,6 +199,7 @@ def evaluate_and_plot_3_1(
     save_pdf_path = None
     cm_counts_csv_path = None
     cm_percent_csv_path = None
+    classification_csv_path = None
 
     if output_dir is not None:
         output_dir = Path(output_dir)
@@ -211,13 +212,16 @@ def evaluate_and_plot_3_1(
         )
 
         dataset_tag = sanitize_filename(dataset_name)
-
-        file_stem = f"{patient_tag}_{dataset_tag}_confusion_matrix"
-
+        
+        base_stem = f"{patient_tag}_{dataset_tag}"
+        
+        file_stem = f"{base_stem}_confusion_matrix"
+        
         save_pdf_path = output_dir / f"{file_stem}.pdf"
         cm_counts_csv_path = output_dir / f"{file_stem}_counts.csv"
         cm_percent_csv_path = output_dir / f"{file_stem}_percent.csv"
 
+classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
     # Plot and optionally save confusion matrix PDF
     cm_counts, cm_percent = plot_confusion_matrix_percent(
         y_true=y_true,
@@ -264,13 +268,16 @@ def evaluate_and_plot_3_1(
     # Save confusion matrices as CSV
     # -------------------------------------------------
     if output_dir is not None:
+    
         cm_counts_df.to_csv(cm_counts_csv_path, index=True)
         cm_percent_df.to_csv(cm_percent_csv_path, index=True)
-
+        report_df.to_csv(classification_csv_path, index=True)
+    
         print("\nSaved outputs:")
         print(f"PDF: {save_pdf_path}")
         print(f"CSV counts: {cm_counts_csv_path}")
         print(f"CSV percent: {cm_percent_csv_path}")
+        print(f"Classification table CSV: {classification_csv_path}")
 
     return {
         "patient_id": patient_id,
