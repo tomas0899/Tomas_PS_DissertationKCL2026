@@ -130,7 +130,7 @@ if len(all_files) == 0:
 #==========================
 # 3. Calculate mean and std per channel
 if compute_stats:
-    ch_mean, ch_std, ch_count, skipped = TEEG_PR_PR.compute_global_channel_stats_1_15(all_files)
+    ch_mean, ch_std, ch_count, skipped = TEEG_PR.compute_global_channel_stats_1_15(all_files)
 
     print("Global channel statistics computed")
     print("Channel means:", ch_mean)

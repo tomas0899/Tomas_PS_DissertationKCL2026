@@ -278,7 +278,7 @@ classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
         print(f"CSV counts: {cm_counts_csv_path}")
         print(f"CSV percent: {cm_percent_csv_path}")
         print(f"Classification table CSV: {classification_csv_path}")
-
+    
     return {
         "patient_id": patient_id,
         "dataset": dataset_name,
@@ -288,7 +288,8 @@ classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
         "confusion_percent": cm_percent_df,
         "pdf_path": save_pdf_path,
         "confusion_counts_csv_path": cm_counts_csv_path,
-        "confusion_percent_csv_path": cm_percent_csv_path
+        "confusion_percent_csv_path": cm_percent_csv_path,
+        "classification_csv_path": classification_csv_path
     }
 #=================================================================================
 #=================================================================================

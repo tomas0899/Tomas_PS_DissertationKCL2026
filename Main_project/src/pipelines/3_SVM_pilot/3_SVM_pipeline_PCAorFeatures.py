@@ -245,42 +245,6 @@ y = y.reset_index(drop=True)
 df_model = df_model.reset_index(drop=True)
 
 n = len(X)
-# ============================================================
-# 0. IMPORT LIBRARIES
-# ============================================================
-
-from pathlib import Path
-import sys
-import json
-
-import numpy as np
-import pandas as pd
-
-
-# ===============================
-# 0.1 Load project modules
-# ===============================
-
-current_file = Path(__file__).resolve()
-
-project_root = None
-
-for parent in current_file.parents:
-    if (parent / "src").exists():
-        project_root = parent
-        break
-
-if project_root is None:
-    raise RuntimeError(
-        "Project root not found. Could not find a parent folder containing 'src'."
-    )
-
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
-
-from src.modules import tools_EEG_models as TEEG_mod
-print("\nFinal cleaned dataset size:")
-print("n =", n)
 
 
 # ============================================================
