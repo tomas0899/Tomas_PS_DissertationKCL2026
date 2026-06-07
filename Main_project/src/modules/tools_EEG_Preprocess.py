@@ -1,21 +1,22 @@
 # Change - Tears for fears 
 import os
+import glob
 from pathlib import Path
 from datetime import datetime, timedelta
-from scipy.stats import skew, kurtosis
 from typing import Optional, Tuple
+
 import numpy as np
 import pandas as pd
+
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from scipy.io import loadmat
+
 import scipy.io as sio
-from scipy.signal import welch
+from scipy.io import loadmat
+from scipy.stats import skew, kurtosis
+from scipy.signal import welch, iirnotch, tf2sos, butter, sosfiltfilt
 from matplotlib.backends.backend_pdf import PdfPages
-from scipy.signal import welch
-import glob
-from scipy.signal import iirnotch, tf2sos
-from scipy.signal import butter, sosfiltfilt, iirnotch, tf2sos
-from pathlib import Path
 #=================================================================================
 #=================================================================================
 #=================================================================================
@@ -183,7 +184,7 @@ def plot_daily_recording_histogram_1_2(df, patient_id="Unknown", pdf_output_path
         )
     
         print(f"PDF saved to: {pdf_output_path}")
-    plt.show()
+    plt.close()
 
 # --- Example Usage ---
 # plot_daily_recording_histogram(df_XB47Y, patient_id="XB47Y")
@@ -507,7 +508,7 @@ def plot_eeg_availability_with_onsetsV2_1_5(
     df_onsets: pd.DataFrame, 
     pdf_output_path: Optional[str] = None,
     plots_per_page: int = 10,
-    show_plot: bool = True
+    show_plot: bool = False
 ) -> pd.DataFrame:
     """
     Plots daily EEG recording availability, overlays seizure onsets,
@@ -691,27 +692,31 @@ def plot_eeg_availability_with_onsetsV2_1_5(
     # ==========================================================
     # 3) Optional display of the full figure
     # ==========================================================
-    fig, axes = plt.subplots(
-        len(unique_days),
-        1,
-        figsize=(14, 3 * len(unique_days)),
-        sharey=True,
-        constrained_layout=True
-    )
-
-    if len(unique_days) == 1:
-        axes = [axes]
-
-    for ax, start_day in zip(axes, unique_days):
-        plot_single_day(ax, start_day)
-
-    axes[-1].set_xlabel("Time (HH:MM)")
-
-
-
+    # Important: only create this full figure if explicitly requested.
+    # Otherwise, long recordings may generate an extremely large figure
+    # and cause memory/X11 errors.
+    
     if show_plot:
+        max_days_to_show = 30  # safety limit for display
+        days_to_show = unique_days[:max_days_to_show]
+    
+        fig, axes = plt.subplots(
+            len(days_to_show),
+            1,
+            figsize=(14, 3 * len(days_to_show)),
+            sharey=True,
+            constrained_layout=True
+        )
+    
+        if len(days_to_show) == 1:
+            axes = [axes]
+    
+        for ax, start_day in zip(axes, days_to_show):
+            plot_single_day(ax, start_day)
+    
+        axes[-1].set_xlabel("Time (HH:MM)")
+    
         plt.show()
-    else:
         plt.close(fig)
 
     # ==========================================================
@@ -1117,7 +1122,7 @@ def full_recording_from_matfiles_1_9(
         try:
             print(f"\n--- Processing file: {file_name} ---")
 
-            # ✅ 0) Obtener onsets asociados a ESTE mat file
+            #  0) Obtener onsets asociados a ESTE mat file
             onsets = (
                 dfm.loc[dfm["file"] == file_name, "onset"]
                 .dropna()
@@ -1126,7 +1131,7 @@ def full_recording_from_matfiles_1_9(
 
             # Guardar en formato ISO (fácil de leer y reproducible)
             seizure_onsets_iso = onsets.dt.strftime("%Y-%m-%d %H:%M:%S.%f").to_numpy(dtype=object)
-            # ✅ 0b) Extract T0 and TF associated with THIS .mat file
+            #  0b) Extract T0 and TF associated with THIS .mat file
             df_file = dfm.loc[dfm["file"] == file_name].copy()
             
             # Ensure datetime format
@@ -1845,7 +1850,7 @@ def visualize_seizure_windows_from_npz_1_10VNormal(
     window_sec: int = 10,
     n_windows: int = 11,   
     pre_onset_sec: int = 60,
-    vertical_offset_uv: float = 100.0,
+    vertical_offset_uv: float = 20,
     output_dir: str = "."
 ):
     """
@@ -1979,7 +1984,7 @@ def visualize_seizure_windows_from_npz_1_10VNormal(
                     label=f"Onset at {onset_in_window_sec:.2f}s"
                 )
             ax.plot(t_sec, segment_1, color="blue", linewidth=0.8, label=f"Ch {channel_idx_1}")
-            ax.plot(t_sec, segment_2, color="red", linewidth=0.8, label=f"Ch {channel_idx_2} (+{vertical_offset_uv:.0f} µV)")
+            ax.plot(t_sec, segment_2, color="red", linewidth=0.8, label=f"Ch {channel_idx_2} (+{vertical_offset_uv:.0f} z-score)")
 
             # líneas guía
             ax.axhline(0, color="blue", linestyle="--", linewidth=0.6, alpha=0.7)

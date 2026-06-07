@@ -104,12 +104,12 @@ def build_experiment_id(
 # PATIENT INFORMATION
 # ----------------------------------------------------------
 # The user only needs to change this value.
-patient_id = "JYXFE"
+patient_id = "XB47Y"
 
 # ----------------------------------------------------------
 # PROJECT ROOTS
 # ----------------------------------------------------------
-project_root = Path("/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project")
+project_root = Path("/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project")
 
 working_data_root = project_root / "data" / "Working"
 results_root = project_root / "results"
@@ -129,7 +129,7 @@ output_root_dir = results_root / patient_id / "Pre_processing"
 # ----------------------------------------------------------
 # CONFIG OUTPUT DIRECTORY
 # ----------------------------------------------------------
-config_output_dir = project_root / "src" / "pipelines" / "1_Pre_process" / "configs"
+config_output_dir = project_root / "src" / "pipelines" / "1_Pre_process" / "configs" / "XB47Y"
 
 
 # ==========================================================
@@ -142,7 +142,7 @@ filtering = {
     "highcut": 48.0,
     "order": 4,
     "do_zscore": False,
-    "notch_freq": 34.5
+    "notch_freq": None
 }
 
 
@@ -151,7 +151,7 @@ filtering = {
 # ==========================================================
 
 plotting = {
-    "show_plot": True,
+    "show_plot": False,
     "channel_idx_1": 0,
     "channel_idx_2": 1,
     "window_sec": 10,

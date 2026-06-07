@@ -92,7 +92,36 @@ df_patient, error_list = TEEG_PR.process_eeg_mat_files_1_1(input_dir)
 #==========================
 #==========================
 #==========================
+
 # 1.2 Visualize distribution of daily accumulated recording time
+print("STEP 1.2 START - daily recording histogram", flush=True)
+
+if histogram_cfg.get("save_pdf", True):
+    print("me tranque cuando entre al loop del histo")
+    TEEG_PR.plot_daily_recording_histogram_1_2(
+        df_patient,
+        patient_id=patient_id,
+        pdf_output_path=histogram_pdf_output_path
+    )
+
+else:
+
+    TEEG_PR.plot_daily_recording_histogram_1_2(
+        df_patient,
+        patient_id=patient_id,
+        pdf_output_path=None
+    )
+
+print("STEP 1.2 END - daily recording histogram", flush=True)
+
+
+# 1.3 Gather seizure data from CSV
+print("STEP 1.3 START - preprocess seizure file", flush=True)
+print("Seizure file:", seizure_file, flush=True)
+
+df_sq, df_di = TEEG_PR.preprocess_seizure_data_1_3(seizure_file)
+
+print("STEP 1.3 END - preprocess seizure file", flush=True)
 if histogram_cfg.get("save_pdf", True):
 
     TEEG_PR.plot_daily_recording_histogram_1_2(
@@ -108,6 +137,16 @@ else:
         patient_id=patient_id,
         pdf_output_path=None
     )
+print("STEP 1.2 END - daily recording histogram", flush=True)
+
+
+# 1.3 Gather seizure data from CSV
+print("STEP 1.3 START - preprocess seizure file", flush=True)
+print("Seizure file:", seizure_file, flush=True)
+
+df_sq, df_di = TEEG_PR.preprocess_seizure_data_1_3(seizure_file)
+
+print("STEP 1.3 END - preprocess seizure file", flush=True)
 #==========================
 #==========================
 #==========================
@@ -131,14 +170,16 @@ if summary_cfg.get("save_csv", True):
 #==========================
 #==========================
 #==========================
+print("STEP 1.4 START - seizure availability map", flush=True)
 # 1.4 Mapping of seizures in all mat files
-df_matches = TEEG_Pr.plot_eeg_availability_with_onsetsV2_1_5(
+df_matches = TEEG_PR.plot_eeg_availability_with_onsetsV2_1_5(
     df_files=df_patient, 
     df_onsets=df_sq, 
     pdf_output_path=map_output_path,
     plots_per_page=10,
     show_plot=show_plot
 )
+print("STEP 1.4 END - seizure availability map", flush=True)
 #search for the mat file with the onset on the 2019-12-11
 
 
@@ -220,7 +261,7 @@ os.makedirs(viz_output_dir, exist_ok=True)
                            #df_matches (may repeat if multiple matches exist)
  # TF:              (K,)   recording end timestamps (ISO format) from
                            #df_matches (may repeat if multiple matches exist)
-
+print("STEP 1.7 START - generate NPZ files", flush=True)
 TEEG_PR.full_recording_from_matfiles_1_9_V2(
     input_dir=input_dir,
     output_dir=output_dir,
@@ -233,7 +274,7 @@ TEEG_PR.full_recording_from_matfiles_1_9_V2(
     do_zscore=do_zscore,
     notch_freq=notch_freq,
 )
-
+print("STEP 1.7 END - generate NPZ files", flush=True)
 #==========================
 #==========================
 #==========================
@@ -242,6 +283,7 @@ TEEG_PR.full_recording_from_matfiles_1_9_V2(
 # VERSION With channel overlap and pre-ictal
 # Final
 import os
+print("STEP 1.8 START - visualize seizure windows from NPZ", flush=True)
 
 directory = npz_output_dir
 for file_name in sorted(os.listdir(directory)):
@@ -253,7 +295,7 @@ for file_name in sorted(os.listdir(directory)):
         print(f"\nProcessing: {file_name}")
 
         
-        TEEG_Pr.visualize_seizure_windows_from_npz_1_10V3(
+        TEEG_PR.visualize_seizure_windows_from_npz_1_10V3(
             npz_path=full_path,
             channel_idx_1=channel_idx_1,
             channel_idx_2=channel_idx_2,
