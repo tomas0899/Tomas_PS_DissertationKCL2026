@@ -149,7 +149,8 @@ def evaluate_and_plot_3_1(
     4. Plots confusion matrix in percentages
     5. Saves confusion matrix PDF
     6. Saves confusion matrix as CSV
-    7. Optionally adds patient ID to outputs
+    7. Saves classification table as CSV
+    8. Optionally adds patient ID to outputs
     """
 
     y_pred = model.predict(X_data)
@@ -158,7 +159,9 @@ def evaluate_and_plot_3_1(
     if labels is None:
         labels = list(range(len(class_names)))
 
+    # -------------------------------------------------
     # Classification report as dataframe
+    # -------------------------------------------------
     report = classification_report(
         y_true,
         y_pred,
@@ -180,7 +183,9 @@ def evaluate_and_plot_3_1(
         dataset_name
     )
 
-    # Global metrics
+    # -------------------------------------------------
+    # Print results
+    # -------------------------------------------------
     print(f"\n{'='*40}")
 
     if patient_id is not None:
@@ -216,17 +221,21 @@ def evaluate_and_plot_3_1(
         )
 
         dataset_tag = sanitize_filename(dataset_name)
-        
+
         base_stem = f"{patient_tag}_{dataset_tag}"
-        
+
         file_stem = f"{base_stem}_confusion_matrix"
-        
+
         save_pdf_path = output_dir / f"{file_stem}.pdf"
         cm_counts_csv_path = output_dir / f"{file_stem}_counts.csv"
         cm_percent_csv_path = output_dir / f"{file_stem}_percent.csv"
 
-classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
+        # Classification table CSV path
+        classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
+
+    # -------------------------------------------------
     # Plot and optionally save confusion matrix PDF
+    # -------------------------------------------------
     cm_counts, cm_percent = plot_confusion_matrix_percent(
         y_true=y_true,
         y_pred=y_pred,
@@ -238,7 +247,9 @@ classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
         show_plot=show_plot
     )
 
+    # -------------------------------------------------
     # Return confusion matrices as dataframes
+    # -------------------------------------------------
     cm_counts_df = pd.DataFrame(
         cm_counts,
         index=[f"True {c}" for c in class_names],
@@ -269,20 +280,26 @@ classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
     )
 
     # -------------------------------------------------
-    # Save confusion matrices as CSV
+    # Save outputs
     # -------------------------------------------------
     if output_dir is not None:
-    
+
         cm_counts_df.to_csv(cm_counts_csv_path, index=True)
         cm_percent_df.to_csv(cm_percent_csv_path, index=True)
-        report_df.to_csv(classification_csv_path, index=True)
-    
+
+        # This saves the printed classification table as CSV
+        report_df.to_csv(
+            classification_csv_path,
+            index=True,
+            index_label="class_or_metric"
+        )
+
         print("\nSaved outputs:")
         print(f"PDF: {save_pdf_path}")
         print(f"CSV counts: {cm_counts_csv_path}")
         print(f"CSV percent: {cm_percent_csv_path}")
         print(f"Classification table CSV: {classification_csv_path}")
-    
+
     return {
         "patient_id": patient_id,
         "dataset": dataset_name,
