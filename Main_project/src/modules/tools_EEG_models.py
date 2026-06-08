@@ -140,7 +140,8 @@ def evaluate_and_plot_3_1(
     patient_id=None,
     output_dir=None,
     labels=None,
-    show_plot=False
+    show_plot=False,
+    output_prefix=None
 ):
     """
     1. Predicts labels
@@ -209,30 +210,30 @@ def evaluate_and_plot_3_1(
     cm_counts_csv_path = None
     cm_percent_csv_path = None
     classification_csv_path = None
-
+    
     if output_dir is not None:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-
-        patient_tag = (
-            f"PAT-{sanitize_filename(patient_id)}"
-            if patient_id is not None
-            else "PAT-unknown"
-        )
-
+    
         dataset_tag = sanitize_filename(dataset_name)
-
-        base_stem = f"{patient_tag}_{dataset_tag}"
-
+    
+        if output_prefix is not None:
+            base_stem = f"{sanitize_filename(output_prefix)}_{dataset_tag}"
+        else:
+            patient_tag = (
+                f"PAT-{sanitize_filename(patient_id)}"
+                if patient_id is not None
+                else "PAT-unknown"
+            )
+            base_stem = f"{patient_tag}_{dataset_tag}"
+    
         file_stem = f"{base_stem}_confusion_matrix"
-
+    
         save_pdf_path = output_dir / f"{file_stem}.pdf"
         cm_counts_csv_path = output_dir / f"{file_stem}_counts.csv"
         cm_percent_csv_path = output_dir / f"{file_stem}_percent.csv"
-
-        # Classification table CSV path
+    
         classification_csv_path = output_dir / f"{base_stem}_classification_table.csv"
-
     # -------------------------------------------------
     # Plot and optionally save confusion matrix PDF
     # -------------------------------------------------

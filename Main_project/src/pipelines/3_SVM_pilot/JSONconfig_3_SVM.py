@@ -22,14 +22,14 @@ patient_id = "XB47Y"
 # 1. PCA dataframe
 # 2. Features dataframe
 input_path = Path(
-    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/df_windowsXB47Y_pca.pkl"
+    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_df_features_ictalVspreictal.pkl"
 )
 
 # Input data type for automatic naming.
 # Options:
 # "PCA"
 # "FEATURES"
-input_data_type = "PCA"
+input_data_type = "FEATURES"
 
 # Metric used to select the best model in grid search.
 # Examples:
@@ -82,6 +82,10 @@ scoring_clean = scoring.replace("_", "-").upper()
 
 today = datetime.today().strftime("%Y%m%d")
 
+experiment_tag = (
+    f"{patient_id}_IN-{input_data_type_clean}_"
+    f"SVM-SCORING-{scoring_clean}_{today}_{version}"
+)
 
 # ============================================================
 # 3. DEFINE OUTPUT PATHS
@@ -94,8 +98,8 @@ eval_output_dir = (
     / "results"
     / patient_id
     / "SVM_pilot"
+    / experiment_tag
 )
-
 # Directory where the generated JSON config will be saved.
 config_output_dir = (
     project_root
@@ -103,6 +107,7 @@ config_output_dir = (
     / "pipelines"
     / "3_SVM_pilot"
     / "configs"
+    / patient_id
 )
 
 eval_output_dir.mkdir(parents=True, exist_ok=True)
@@ -113,10 +118,7 @@ config_output_dir.mkdir(parents=True, exist_ok=True)
 # 4. AUTOMATIC CONFIG FILE NAME
 # ============================================================
 
-config_filename = (
-    f"config_{patient_id}_IN-{input_data_type_clean}_"
-    f"SVM-SCORING-{scoring_clean}_{today}_{version}.json"
-)
+config_filename = f"config_{experiment_tag}.json"
 
 config_output_path = config_output_dir / config_filename
 
@@ -127,6 +129,7 @@ config_output_path = config_output_dir / config_filename
 
 config = {
     "experiment_info": {
+        "experiment_tag": experiment_tag,
         "pipeline_name": "SVM_pilot",
         "patient_id": patient_id,
         "input_data_type": input_data_type_clean,
@@ -140,7 +143,8 @@ config = {
     },
 
     "outputs": {
-        "eval_output_dir": str(eval_output_dir)
+        "eval_output_dir": str(eval_output_dir),
+        "output_prefix": experiment_tag
     },
 
     "data_processing": {
@@ -215,7 +219,7 @@ config = {
             "Validation",
             "Test"
         ],
-        "show_plot": True
+        "show_plot": False
     }
 }
 

@@ -71,7 +71,7 @@ input_path = Path(config["inputs"]["input_path"])
 
 eval_output_dir = Path(config["outputs"]["eval_output_dir"])
 eval_output_dir.mkdir(parents=True, exist_ok=True)
-
+output_prefix = config["outputs"].get("output_prefix", patient_id)
 time_column = config["data_processing"]["time_column"]
 target_column = config["data_processing"]["target_column"]
 
@@ -355,7 +355,9 @@ val_results = TEEG_mod.evaluate_and_plot_3_1(
     patient_id=patient_id,
     output_dir=eval_output_dir,
     labels=labels,
-    show_plot=show_plot
+    show_plot=show_plot,
+    output_prefix=output_prefix
+    
 )
 
 test_results = TEEG_mod.evaluate_and_plot_3_1(
@@ -367,7 +369,8 @@ test_results = TEEG_mod.evaluate_and_plot_3_1(
     patient_id=patient_id,
     output_dir=eval_output_dir,
     labels=labels,
-    show_plot=show_plot
+    show_plot=show_plot,
+    output_prefix=output_prefix
 )
 
 
