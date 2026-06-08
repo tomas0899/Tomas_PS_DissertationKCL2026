@@ -22,14 +22,14 @@ patient_id = "XB47Y"
 # 1. PCA dataframe
 # 2. Features dataframe
 input_path = Path(
-    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_df_features_ictalVspreictal.pkl"
+    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/df_windowsXB47Y_pca.pkl"
 )
 
 # Input data type for automatic naming.
 # Options:
 # "PCA"
 # "FEATURES"
-input_data_type = "FEATURES"
+input_data_type = "PCA"
 
 # Metric used to select the best model in grid search.
 # Examples:

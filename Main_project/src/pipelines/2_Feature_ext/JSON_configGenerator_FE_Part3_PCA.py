@@ -33,22 +33,66 @@ USER_INFO = {
     "version": "v01"
 }
 
+# ------------------------------------------------------------
+# Project-level paths
+# ------------------------------------------------------------
+PROJECT_ROOT = Path(
+    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project"
+)
+
+PATIENT_ID = USER_INFO["patient_id"]
+
+# ------------------------------------------------------------
+# Inputs
+# ------------------------------------------------------------
 INPUTS = {
-    # Main input dataframe
-    "features_pickle": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part2_features/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01/JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE8to5min_ICT0to3min_GAPasINT_FINAL-PREvsSEIZ_20260519_v01_FEAT-TIME-FREQ_20260519_v01_df_features_ictalVspreictal.pkl",
+    # Folder containing the feature dataframe
+    "features_input_dir": str(
+        PROJECT_ROOT
+        / "results"
+        / PATIENT_ID
+        / "Feature_ext"
+        / "Part2_features"
+        / "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01"
+    ),
+
+    # Feature dataframe filename
+    "features_pickle_name": (
+        "JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01_df_features_ictalVspreictal.pkl"
+    ),
 
     # Input type expected by the PCA pipeline
     "input_type": "pkl"
 }
 
+# ------------------------------------------------------------
+# Outputs
+# ------------------------------------------------------------
 OUTPUTS = {
-    # If None, PCA outputs will be saved in the same parent folder as the input pickle
-    "output_base_dir": None,
+    # Base folder where PCA experiment folders will be created
+    "output_base_dir": str(
+        PROJECT_ROOT
+        / "results"
+        / PATIENT_ID
+        / "Feature_ext"
+        / "Part3_PCA"
+    ),
 
-    # Directory where this generated config JSON will be saved
-    # If None, the config will be saved in the current working directory
-    "config_output_dir": "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/2_Feature_ext/configs"
+    # Folder where this generated config JSON will be saved
+    "config_output_dir": str(
+        PROJECT_ROOT
+        / "src"
+        / "pipelines"
+        / "2_Feature_ext"
+        / "configs"
+        / PATIENT_ID
+    )
 }
+
+
+# ============================================================
+# 2. PARAMETERS
+# ============================================================
 
 PARAMETERS = {
     # Metadata columns are kept and re-attached after PCA
@@ -105,10 +149,22 @@ PARAMETERS = {
 
 
 # ============================================================
-# 2. AUTOMATIC NAMING SECTION
+# 3. AUTOMATIC INPUT PATH
 # ============================================================
 
-features_pickle = Path(INPUTS["features_pickle"])
+features_pickle = (
+    Path(INPUTS["features_input_dir"])
+    / INPUTS["features_pickle_name"]
+)
+
+if not features_pickle.exists():
+    raise FileNotFoundError(f"Feature pickle not found: {features_pickle}")
+
+
+# ============================================================
+# 4. AUTOMATIC NAMING SECTION
+# ============================================================
+
 input_stem = features_pickle.stem
 
 today = datetime.now().strftime("%Y%m%d")
@@ -130,13 +186,10 @@ experiment_id = f"{patient_id}_{input_stem}_{pca_tag}_{today}_{version}"
 
 
 # ============================================================
-# 2.1 PCA OUTPUT PATHS
+# 5. PCA OUTPUT PATHS
 # ============================================================
 
-if OUTPUTS["output_base_dir"] is None:
-    output_dir = features_pickle.parent / experiment_id
-else:
-    output_dir = Path(OUTPUTS["output_base_dir"]) / experiment_id
+output_dir = Path(OUTPUTS["output_base_dir"]) / experiment_id
 
 output_paths = {
     "output_dir": str(output_dir),
@@ -147,25 +200,20 @@ output_paths = {
 
 
 # ============================================================
-# 2.2 GENERATED CONFIG OUTPUT PATH
+# 6. GENERATED CONFIG OUTPUT PATH
 # ============================================================
 
-if OUTPUTS["config_output_dir"] is None:
-    config_output_dir = Path.cwd()
-else:
-    config_output_dir = Path(OUTPUTS["config_output_dir"])
-
+config_output_dir = Path(OUTPUTS["config_output_dir"])
 config_output_dir.mkdir(parents=True, exist_ok=True)
 
-config_output_path = config_output_dir / f"config_{experiment_id}_config.json"
+config_output_path = config_output_dir / f"config_{experiment_id}.json"
 
-
-# Optional: add generated config path to the config itself
+# Add generated config path to the config itself
 output_paths["generated_config_json"] = str(config_output_path)
 
 
 # ============================================================
-# 3. FINAL CONFIG STRUCTURE
+# 7. FINAL CONFIG STRUCTURE
 # ============================================================
 
 config = {
@@ -178,6 +226,8 @@ config = {
     "user_info": USER_INFO,
 
     "inputs": {
+        "features_input_dir": INPUTS["features_input_dir"],
+        "features_pickle_name": INPUTS["features_pickle_name"],
         "features_pickle": str(features_pickle),
         "input_type": INPUTS["input_type"]
     },
@@ -189,7 +239,7 @@ config = {
 
 
 # ============================================================
-# 4. SAVE CONFIG JSON
+# 8. SAVE CONFIG JSON
 # ============================================================
 
 with open(config_output_path, "w", encoding="utf-8") as f:
@@ -198,6 +248,9 @@ with open(config_output_path, "w", encoding="utf-8") as f:
 print("Config JSON generated successfully.")
 print(f"Experiment ID: {experiment_id}")
 print(f"Config saved to: {config_output_path.resolve()}")
+print()
+print("Input path:")
+print(f"- features_pickle: {features_pickle}")
 print()
 print("Main output paths that the PCA pipeline should use:")
 for key, value in output_paths.items():
