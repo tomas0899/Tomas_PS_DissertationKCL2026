@@ -96,29 +96,29 @@ def build_experiment_id(
 # ----------------------------------------------------------
 # PATIENT INFORMATION
 # ----------------------------------------------------------
-patient_id = "JYXFE"
+patient_id = "XB47Y"
 
 # ----------------------------------------------------------
 # INPUT PATHS
 # ----------------------------------------------------------
 # Folder containing the original/non-normalized .npz files
-input_npz_dir = "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Pre_processing/JYXFE_IN-JYXFE_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260511/npz"
+input_npz_dir = "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Pre_processing/XB47Y_IN-XB47Y_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260504/npz"
 
 # Example .npz file used only for inspection
-example_npz_file = "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Pre_processing/JYXFE_IN-JYXFE_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260511/npz/JYXFE_1_preproc_full.npz"
+example_npz_file = "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Pre_processing/XB47Y_IN-XB47Y_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260504/npz/XB47Y_182_preproc_full.npz"
 
 # ----------------------------------------------------------
 # USER-DEFINED OUTPUT ROOT DIRECTORY
 # ----------------------------------------------------------
 # The user chooses ONLY this folder.
 # The script will create a subfolder inside it using experiment_id.
-output_root_dir = "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Pre_processing"
+output_root_dir = "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Pre_processing"
 
 # ----------------------------------------------------------
 # CONFIG OUTPUT DIRECTORY
 # ----------------------------------------------------------
 # Folder where the generated JSON config will be saved.
-config_output_dir = "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/1_Pre_process/configs"
+config_output_dir = "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/src/pipelines/1_Pre_process/configs/XB47Y"
 
 
 # ==========================================================

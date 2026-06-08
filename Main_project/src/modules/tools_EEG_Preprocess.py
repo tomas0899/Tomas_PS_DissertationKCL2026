@@ -999,7 +999,7 @@ def bandpass_filter_eegwin_1_8(
     order: int = 4,
     check_nans: bool = True,
     notch_freq: float | None = None,
-    notch_Q: float = 10.0
+    notch_Q: float = 20.0
 ):
     """
     Band-pass robusto usando SOS + sosfiltfilt (fase cero).
