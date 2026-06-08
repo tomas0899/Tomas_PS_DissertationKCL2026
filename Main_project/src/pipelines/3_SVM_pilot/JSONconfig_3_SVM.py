@@ -14,22 +14,80 @@ from datetime import datetime
 # The rest of the script builds the config automatically.
 # ============================================================
 
-# Patient ID
-patient_id = "XB47Y"
+USER_INFO = {
+    "patient_id": "RQXZ1",
+    "experiment_name": "SVM_pilot",
+    "version": "v01"
+}
 
-# Input dataframe path.
-# This can be either:
-# 1. PCA dataframe
-# 2. Features dataframe
-input_path = Path(
-    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/df_windowsXB47Y_pca.pkl"
+# ------------------------------------------------------------
+# Project-level paths
+# ------------------------------------------------------------
+
+PROJECT_ROOT = Path(
+    "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project"
 )
 
-# Input data type for automatic naming.
-# Options:
-# "PCA"
-# "FEATURES"
-input_data_type = "PCA"
+PATIENT_ID = USER_INFO["patient_id"]
+
+# ------------------------------------------------------------
+# Inputs
+# ------------------------------------------------------------
+
+INPUTS = {
+    # Folder containing the input dataframe
+    # This can contain either:
+    # 1. PCA dataframe
+    # 2. Features dataframe
+    "input_dir": str(
+        PROJECT_ROOT
+        / "results"
+        / PATIENT_ID
+        / "Feature_ext"
+        / "Part2_features"
+        / "RQXZ1_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260510_v01_FEAT-TIME-FREQ_20260510_v01"
+    ),
+
+    # Input dataframe filename
+    "input_filename": "RQXZ1_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260510_v01_FEAT-TIME-FREQ_20260510_v01_df_features_ictalVspreictal.pkl",
+
+    # Input data type for automatic naming.
+    # Options:
+    # "PCA"
+    # "FEATURES"
+    "input_data_type": "FEATURES",
+
+    # Input file type
+    "input_type": "pkl"
+}
+
+# ------------------------------------------------------------
+# Outputs
+# ------------------------------------------------------------
+
+OUTPUTS = {
+    # Base folder where SVM experiment folders will be created
+    "output_base_dir": str(
+        PROJECT_ROOT
+        / "results"
+        / PATIENT_ID
+        / "SVM_pilot"
+    ),
+
+    # Folder where this generated config JSON will be saved
+    "config_output_dir": str(
+        PROJECT_ROOT
+        / "src"
+        / "pipelines"
+        / "3_SVM_pilot"
+        / "configs"
+        / PATIENT_ID
+    )
+}
+
+# ------------------------------------------------------------
+# Model selection
+# ------------------------------------------------------------
 
 # Metric used to select the best model in grid search.
 # Examples:
@@ -39,9 +97,6 @@ input_data_type = "PCA"
 # "recall_macro"
 scoring = "f1_macro"
 
-# Config version
-version = "v01"
-
 
 # ============================================================
 # AUTOMATIC SECTION
@@ -49,34 +104,23 @@ version = "v01"
 # ============================================================
 
 # ============================================================
-# 1. AUTOMATIC PROJECT PATH DETECTION
+# 1. CLEAN USER INPUTS
 # ============================================================
 
-current_file = Path(__file__).resolve()
+patient_id = USER_INFO["patient_id"]
+version = USER_INFO["version"]
 
-project_root = None
+input_path = Path(INPUTS["input_dir"]) / INPUTS["input_filename"]
 
-for parent in current_file.parents:
-    if (parent / "src").exists() and (parent / "results").exists():
-        project_root = parent
-        break
-
-if project_root is None:
-    raise RuntimeError(
-        "Project root not found. Could not find a parent folder containing 'src' and 'results'."
-    )
-
-
-# ============================================================
-# 2. CLEAN USER INPUTS
-# ============================================================
-
-input_data_type_clean = input_data_type.upper()
+input_data_type_clean = INPUTS["input_data_type"].upper()
 
 if input_data_type_clean not in ["PCA", "FEATURES"]:
     raise ValueError(
         "input_data_type must be either 'PCA' or 'FEATURES'."
     )
+
+if not input_path.exists():
+    raise FileNotFoundError(f"Input dataframe not found: {input_path}")
 
 scoring_clean = scoring.replace("_", "-").upper()
 
@@ -87,40 +131,51 @@ experiment_tag = (
     f"SVM-SCORING-{scoring_clean}_{today}_{version}"
 )
 
+
 # ============================================================
-# 3. DEFINE OUTPUT PATHS
+# 2. DEFINE OUTPUT DIRECTORIES
 # ============================================================
 
-# Main output directory for SVM results.
-# This adapts automatically to each patient.
-eval_output_dir = (
-    project_root
-    / "results"
-    / patient_id
-    / "SVM_pilot"
-    / experiment_tag
-)
-# Directory where the generated JSON config will be saved.
-config_output_dir = (
-    project_root
-    / "src"
-    / "pipelines"
-    / "3_SVM_pilot"
-    / "configs"
-    / patient_id
-)
+output_base_dir = Path(OUTPUTS["output_base_dir"])
+eval_output_dir = output_base_dir / experiment_tag
 
-eval_output_dir.mkdir(parents=True, exist_ok=True)
+config_output_dir = Path(OUTPUTS["config_output_dir"])
 config_output_dir.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================
-# 4. AUTOMATIC CONFIG FILE NAME
+# 3. AUTOMATIC CONFIG FILE NAME
 # ============================================================
 
 config_filename = f"config_{experiment_tag}.json"
-
 config_output_path = config_output_dir / config_filename
+
+
+# ============================================================
+# 4. DEFINE OUTPUT PATHS
+# ============================================================
+
+output_paths = {
+    # Main evaluation folder
+    "eval_output_dir": str(eval_output_dir),
+
+    # Prefix used by evaluation functions
+    "output_prefix": experiment_tag,
+
+    # Generated config JSON
+    "generated_config_json": str(config_output_path),
+
+    # Optional copy of the config inside the experiment output folder
+    "config_copy_json": str(eval_output_dir / config_filename),
+
+    # Optional model/grid-search outputs
+    "best_model_pickle": str(eval_output_dir / f"{experiment_tag}_best_model.pkl"),
+    "best_params_json": str(eval_output_dir / f"{experiment_tag}_best_params.json"),
+    "grid_search_results_csv": str(eval_output_dir / f"{experiment_tag}_grid_search_results.csv"),
+
+    # Optional split/QC outputs
+    "split_summary_csv": str(eval_output_dir / f"{experiment_tag}_split_summary.csv")
+}
 
 
 # ============================================================
@@ -139,13 +194,13 @@ config = {
     },
 
     "inputs": {
-        "input_path": str(input_path)
+        "input_dir": INPUTS["input_dir"],
+        "input_filename": INPUTS["input_filename"],
+        "input_path": str(input_path),
+        "input_type": INPUTS["input_type"]
     },
 
-    "outputs": {
-        "eval_output_dir": str(eval_output_dir),
-        "output_prefix": experiment_tag
-    },
+    "outputs": output_paths,
 
     "data_processing": {
         "time_column": "window_start_time",
@@ -228,8 +283,16 @@ config = {
 # 6. SAVE JSON CONFIG
 # ============================================================
 
-with open(config_output_path, "w") as f:
+with open(config_output_path, "w", encoding="utf-8") as f:
     json.dump(config, f, indent=4)
 
-print("JSON config saved successfully:")
-print(config_output_path)
+print("JSON config saved successfully.")
+print(f"Experiment tag: {experiment_tag}")
+print(f"Config saved to: {config_output_path.resolve()}")
+print()
+print("Input path:")
+print(f"- input_path: {input_path.resolve()}")
+print()
+print("Main output paths that the SVM pipeline should use:")
+for key, value in output_paths.items():
+    print(f"- {key}: {value}")
