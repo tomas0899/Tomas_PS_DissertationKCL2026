@@ -244,11 +244,10 @@ config = {
     },
 
     "grid_search": {
+        "uses_default_parameters_from_module": True,
         "cv_strategy": "TimeSeriesSplit",
-        "n_splits": 4,
-        "scoring": scoring,
-        "n_jobs": -1,
-        "verbose": 1
+        "default_n_splits": 4,
+        "default_scoring": "f1_macro"
     },
 
     "evaluation": {

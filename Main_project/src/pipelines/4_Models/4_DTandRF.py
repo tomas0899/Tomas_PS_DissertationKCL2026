@@ -68,7 +68,6 @@ print(config_path)
 # ============================================================
 
 patient_id = config["experiment_info"]["patient_id"]
-random_state = config["experiment_info"]["random_state"]
 input_path = Path(config["inputs"]["input_path"])
 
 main_eval_output_dir = Path(config["outputs"]["main_eval_output_dir"])
@@ -103,10 +102,6 @@ train_search_range = tuple(config["temporal_split"]["train_search_range"])
 val_search_range = tuple(config["temporal_split"]["val_search_range"])
 ratio_weight = config["temporal_split"]["ratio_weight"]
 
-n_splits = config["grid_search"]["n_splits"]
-scoring = config["grid_search"]["scoring"]
-n_jobs = config["grid_search"]["n_jobs"]
-verbose = config["grid_search"]["verbose"]
 
 show_plot = config["evaluation"]["show_plot"]
 
@@ -339,7 +334,7 @@ grid_dt, best_model_dt, best_params_dt, best_score_dt = TEEG_mod.train_decision_
 # 17. DECISION TREE EVALUATION
 # ============================================================
 
-val_results = TEEG_mod.evaluate_and_plot_3_1(
+val_results_dt = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_dt,
     X_data=X_val,
     y_true=y_val,
@@ -351,7 +346,7 @@ val_results = TEEG_mod.evaluate_and_plot_3_1(
     show_plot=show_plot
 )
 
-test_results = TEEG_mod.evaluate_and_plot_3_1(
+test_results_dt = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_dt,
     X_data=X_test,
     y_true=y_test,
@@ -373,11 +368,11 @@ grid_rf, best_model_rf, best_params_rf, best_score_rf = TEEG_mod.train_random_fo
     y_train
 )
 # ============================================================
-# 19.RANDOM FOREST TRAINING
+# 19.RANDOM FOREST EVALUATION
 # ============================================================
 
 
-val_results = TEEG_mod.evaluate_and_plot_3_1(
+val_results_rf = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_rf,
     X_data=X_val,
     y_true=y_val,
@@ -389,7 +384,7 @@ val_results = TEEG_mod.evaluate_and_plot_3_1(
     show_plot=show_plot
 )
 
-test_results = TEEG_mod.evaluate_and_plot_3_1(
+test_results_rf = TEEG_mod.evaluate_and_plot_3_1(
     model=best_model_rf,
     X_data=X_test,
     y_true=y_test,
