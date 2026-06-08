@@ -15,7 +15,7 @@ from datetime import datetime
 # ============================================================
 
 USER_INFO = {
-    "patient_id": "RQXZ1",
+    "patient_id": "JYXFE",
     "experiment_name": "SVM_pilot",
     "version": "v01"
 }
@@ -44,18 +44,18 @@ INPUTS = {
         / "results"
         / PATIENT_ID
         / "Feature_ext"
-        / "Part2_features"
-        / "RQXZ1_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260510_v01_FEAT-TIME-FREQ_20260510_v01"
+        / "Part3_PCA"
+        / "JYXFE_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01_df_features_ictalVspreictal_PCA_VAR90_20260608_v01"
     ),
 
     # Input dataframe filename
-    "input_filename": "RQXZ1_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260510_v01_FEAT-TIME-FREQ_20260510_v01_df_features_ictalVspreictal.pkl",
+    "input_filename": "JYXFE_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01_df_features_ictalVspreictal_PCA_VAR90_20260608_v01_df_windows_pca.pkl",
 
     # Input data type for automatic naming.
     # Options:
     # "PCA"
     # "FEATURES"
-    "input_data_type": "FEATURES",
+    "input_data_type": "PCA",
 
     # Input file type
     "input_type": "pkl"
