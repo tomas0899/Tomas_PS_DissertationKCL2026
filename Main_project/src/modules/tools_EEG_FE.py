@@ -954,7 +954,7 @@ def plot_top_mannwhitney_features_2_9(
     df_mannwhitney_results,
     top_n=20,
     pdf_output_path=None,
-    show_plot=True,
+    show_plot=False,
     patient_id=None
 ):
     """
@@ -1069,7 +1069,7 @@ def plot_top_features_by_channel_2_10(
     top_n=20,
     channel_patterns=None,
     pdf_output_path=None,
-    show_plot=True,
+    show_plot=False,
     patient_id=None
 ):
     """

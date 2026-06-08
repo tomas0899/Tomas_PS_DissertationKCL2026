@@ -14,6 +14,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+
 
 #TOOLS EEG MODELS:
 #=================================================================================
@@ -45,7 +49,7 @@ def plot_confusion_matrix_percent(
     patient_id=None,
     labels=None,
     save_pdf_path=None,
-    show_plot=True
+    show_plot=False
 ):
     """
     Plot a row-normalized confusion matrix in percentage format.
@@ -136,7 +140,7 @@ def evaluate_and_plot_3_1(
     patient_id=None,
     output_dir=None,
     labels=None,
-    show_plot=True
+    show_plot=False
 ):
     """
     1. Predicts labels
@@ -560,4 +564,233 @@ def train_svm_gridsearch_3_3(
     print(grid_search.best_score_)
 
     return best_model, grid_search
-    
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# Function #4
+
+
+
+def train_decision_tree_gridsearch_3_4(
+    X_train,
+    y_train,
+    n_splits: int = 4,
+    scoring: str = "f1_macro",
+    random_state: int = 42,
+    n_jobs: int = -1,
+    verbose: int = 1,
+):
+    """
+    Trains a Decision Tree classifier using TimeSeriesSplit and GridSearchCV.
+
+    Parameters
+    ----------
+    X_train : array-like or DataFrame
+        Training features. For your case, this can be the PCA-transformed features.
+
+    y_train : array-like or Series
+        Training labels.
+
+    n_splits : int
+        Number of temporal cross-validation splits.
+
+    scoring : str
+        Metric used by GridSearchCV. Default is "f1_macro".
+
+    random_state : int
+        Random seed for reproducibility.
+
+    n_jobs : int
+        Number of CPU cores used by GridSearchCV. -1 uses all available cores.
+
+    verbose : int
+        Verbosity level for GridSearchCV.
+
+    Returns
+    -------
+    grid_dt : GridSearchCV object
+        Full fitted GridSearchCV object.
+
+    best_model_dt : Pipeline
+        Best fitted Decision Tree pipeline.
+
+    best_params_dt : dict
+        Best hyperparameters found.
+
+    best_score_dt : float
+        Best mean cross-validation score.
+    """
+
+    # ----------------------------------------------------------
+    # 1. Build Decision Tree pipeline
+    # ----------------------------------------------------------
+    pipeline_dt = Pipeline([
+        ("tree", DecisionTreeClassifier(
+            random_state=random_state,
+            class_weight="balanced"
+        ))
+    ])
+
+    # ----------------------------------------------------------
+    # 2. Define temporal cross-validation
+    # ----------------------------------------------------------
+    tscv = TimeSeriesSplit(n_splits=n_splits)
+
+    # ----------------------------------------------------------
+    # 3. Define hyperparameter grid
+    # ----------------------------------------------------------
+    param_grid_dt = {
+        "tree__criterion": ["gini", "entropy"],
+        "tree__max_depth": [2, 3, 4, 5, 6, None],
+        "tree__min_samples_split": [2, 5, 10, 20],
+        "tree__min_samples_leaf": [1, 2, 5, 10]
+    }
+
+    # ----------------------------------------------------------
+    # 4. Set up GridSearchCV
+    # ----------------------------------------------------------
+    grid_dt = GridSearchCV(
+        estimator=pipeline_dt,
+        param_grid=param_grid_dt,
+        scoring=scoring,
+        cv=tscv,
+        n_jobs=n_jobs,
+        verbose=verbose,
+        refit=True
+    )
+
+    # ----------------------------------------------------------
+    # 5. Train model
+    # ----------------------------------------------------------
+    grid_dt.fit(X_train, y_train)
+
+    # ----------------------------------------------------------
+    # 6. Extract best model and results
+    # ----------------------------------------------------------
+    best_model_dt = grid_dt.best_estimator_
+    best_params_dt = grid_dt.best_params_
+    best_score_dt = grid_dt.best_score_
+
+    print("Best Decision Tree parameters:")
+    print(best_params_dt)
+
+    print("\nBest mean CV macro F1:")
+    print(best_score_dt)
+
+    return grid_dt, best_model_dt, best_params_dt, best_score_dt
+
+
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# Function #5
+
+def train_random_forest_gridsearch_3_5(
+    X_train,
+    y_train,
+    n_splits: int = 4,
+    scoring: str = "f1_macro",
+    random_state: int = 42,
+    n_jobs: int = -1,
+    verbose: int = 1,
+):
+    """
+    Trains a Random Forest classifier using TimeSeriesSplit and GridSearchCV.
+
+    Parameters
+    ----------
+    X_train : array-like or DataFrame
+        Training features. In your case, this can be the PCA-transformed features.
+
+    y_train : array-like or Series
+        Training labels.
+
+    n_splits : int
+        Number of temporal cross-validation splits.
+
+    scoring : str
+        Metric used by GridSearchCV. Default is "f1_macro".
+
+    random_state : int
+        Random seed for reproducibility.
+
+    n_jobs : int
+        Number of CPU cores used by GridSearchCV. -1 uses all available cores.
+
+    verbose : int
+        Verbosity level for GridSearchCV.
+
+    Returns
+    -------
+    grid_rf : GridSearchCV object
+        Full fitted GridSearchCV object.
+
+    best_model_rf : Pipeline
+        Best fitted Random Forest pipeline.
+
+    best_params_rf : dict
+        Best hyperparameters found.
+
+    best_score_rf : float
+        Best mean cross-validation score.
+    """
+
+    # ----------------------------------------------------------
+    # 1. Build Random Forest pipeline
+    # ----------------------------------------------------------
+    pipeline_rf = Pipeline([
+        ("forest", RandomForestClassifier(
+            random_state=random_state,
+            class_weight="balanced",
+            n_jobs=1
+        ))
+    ])
+
+    # ----------------------------------------------------------
+    # 2. Define temporal cross-validation
+    # ----------------------------------------------------------
+    tscv = TimeSeriesSplit(n_splits=n_splits)
+
+    # ----------------------------------------------------------
+    # 3. Define hyperparameter grid
+    # ----------------------------------------------------------
+    param_grid_rf = {
+        "forest__n_estimators": [100, 200, 500],
+        "forest__max_depth": [3, 5, 10, None],
+        "forest__min_samples_split": [2, 5, 10],
+        "forest__min_samples_leaf": [1, 2, 5, 10],
+        "forest__max_features": ["sqrt", "log2", None]
+    }
+
+    # ----------------------------------------------------------
+    # 4. Set up GridSearchCV
+    # ----------------------------------------------------------
+    grid_rf = GridSearchCV(
+        estimator=pipeline_rf,
+        param_grid=param_grid_rf,
+        scoring=scoring,
+        cv=tscv,
+        n_jobs=n_jobs,
+        verbose=verbose,
+        refit=True
+    )
+
+    # ----------------------------------------------------------
+    # 5. Train model
+    # ----------------------------------------------------------
+    grid_rf.fit(X_train, y_train)
+
+    # ----------------------------------------------------------
+    # 6. Extract best model and results
+    # ----------------------------------------------------------
+    best_model_rf = grid_rf.best_estimator_
+    best_params_rf = grid_rf.best_params_
+    best_score_rf = grid_rf.best_score_
+
+    print("Best Random Forest parameters:")
+    print(best_params_rf)
+
+    print("\nBest mean CV macro F1:")
+    print(best_score_rf)
+
+    return grid_rf, best_model_rf, best_params_rf, best_score_rf
