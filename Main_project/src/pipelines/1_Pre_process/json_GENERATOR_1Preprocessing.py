@@ -104,7 +104,7 @@ def build_experiment_id(
 # PATIENT INFORMATION
 # ----------------------------------------------------------
 # The user only needs to change this value.
-patient_id = "XB47Y"
+patient_id = "10OXG"
 
 # ----------------------------------------------------------
 # PROJECT ROOTS
@@ -129,7 +129,7 @@ output_root_dir = results_root / patient_id / "Pre_processing"
 # ----------------------------------------------------------
 # CONFIG OUTPUT DIRECTORY
 # ----------------------------------------------------------
-config_output_dir = project_root / "src" / "pipelines" / "1_Pre_process" / "configs" / "XB47Y"
+config_output_dir = project_root / "src" / "pipelines" / "1_Pre_process" / "configs" / "10OXG"
 
 
 # ==========================================================
@@ -142,7 +142,7 @@ filtering = {
     "highcut": 48.0,
     "order": 4,
     "do_zscore": False,
-    "notch_freq": None
+    "notch_freq": 34.5
 }
 
 

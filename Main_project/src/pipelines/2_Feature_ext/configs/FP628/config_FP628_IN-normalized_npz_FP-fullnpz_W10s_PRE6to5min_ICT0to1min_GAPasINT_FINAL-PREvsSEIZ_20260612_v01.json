@@ -1,0 +1,68 @@
+{
+    "experiment_id": "FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01",
+    "created_at": "2026-06-12T16:05:09",
+    "date_code": "20260612",
+    "version": "v01",
+    "patient_id": "FP628",
+    "paths": {
+        "input_npz_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Pre_processing/FP628_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612/normalized_npz",
+        "output_root_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Feature_ext/Part1_labeling",
+        "output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Feature_ext/Part1_labeling/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01"
+    },
+    "file_selection": {
+        "file_pattern": "*full.npz"
+    },
+    "windowing": {
+        "window_sec": 10
+    },
+    "labeling": {
+        "preictal_range_min": [
+            -6,
+            -5
+        ],
+        "ictal_range_min": [
+            0,
+            1
+        ],
+        "include_gap_as_interictal": true,
+        "class_mapping": {
+            "interictal": 0,
+            "preictal": 1,
+            "seizure": 2
+        },
+        "labeling_description": "Windows are labelled according to their temporal position relative to seizure onset. Preictal windows are defined by preictal_range_min. Ictal/seizure windows are defined by ictal_range_min. Gaps can optionally be labelled as interictal."
+    },
+    "filtering": {
+        "keep_only_preictal_seizure": true
+    },
+    "output_files": {
+        "df_labeled_filename": "FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_df_labeled_all.pkl",
+        "df_final_filename": "FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_df_final_preictal_vs_seizure.pkl",
+        "label_summary_filename": "FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_label_summary.csv"
+    },
+    "output_paths": {
+        "df_labeled_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Feature_ext/Part1_labeling/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_df_labeled_all.pkl",
+        "df_final_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Feature_ext/Part1_labeling/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_df_final_preictal_vs_seizure.pkl",
+        "label_summary_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/FP628/Feature_ext/Part1_labeling/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01/FP628_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_label_summary.csv"
+    },
+    "naming": {
+        "input_name": "normalized_npz",
+        "file_pattern_code": "fullnpz",
+        "window_code": "W10s",
+        "preictal_code": "PRE6to5min",
+        "ictal_code": "ICT0to1min",
+        "gap_code": "GAPasINT",
+        "filter_code": "FINAL-PREvsSEIZ",
+        "date_code": "20260612",
+        "version": "v01"
+    },
+    "pipeline_steps": {
+        "load_metadata": true,
+        "temporal_sanity_check": true,
+        "clean_onsets": true,
+        "run_windowing": true,
+        "run_labeling": true,
+        "run_filtering": true,
+        "save_outputs": true
+    }
+}

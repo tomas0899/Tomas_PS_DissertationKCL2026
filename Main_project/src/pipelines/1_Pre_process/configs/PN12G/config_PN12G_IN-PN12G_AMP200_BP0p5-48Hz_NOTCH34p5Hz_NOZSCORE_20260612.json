@@ -1,0 +1,55 @@
+{
+    "experiment_id": "PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612",
+    "created_at": "2026-06-12T12:58:57",
+    "date_code": "20260612",
+    "patient_id": "PN12G",
+    "paths": {
+        "input_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/data/Working/PN12G",
+        "seizure_file": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/data/Working/PN12G/PN12G_seizures.xlsx",
+        "output_root_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing",
+        "experiment_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612",
+        "map_output_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/maps/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612_seizure_availability_map.pdf",
+        "npz_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/npz",
+        "viz_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/visualizations",
+        "qc_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/qc"
+    },
+    "naming": {
+        "input_name": "PN12G",
+        "amp_code": "AMP200",
+        "bandpass_code": "BP0p5-48Hz",
+        "notch_code": "NOTCH34p5Hz",
+        "zscore_code": "NOZSCORE"
+    },
+    "filtering": {
+        "amp_threshold": 200.0,
+        "lowcut": 0.5,
+        "highcut": 48.0,
+        "order": 4,
+        "do_zscore": false,
+        "notch_freq": 34.5
+    },
+    "plotting": {
+        "show_plot": false,
+        "channel_idx_1": 0,
+        "channel_idx_2": 1,
+        "window_sec": 10,
+        "n_windows": 12,
+        "pre_onset_sec": 60,
+        "vertical_offset_uv": 100
+    },
+    "daily_recording_histogram": {
+        "save_pdf": true,
+        "pdf_output_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/qc/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612_daily_recording_histogram.pdf"
+    },
+    "recording_onset_summary": {
+        "save_csv": true,
+        "output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/PN12G/Pre_processing/PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/qc",
+        "output_filename": "PN12G_IN-PN12G_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612_recording_onset_summary.csv",
+        "t0_col": "T0",
+        "tf_col": "TF",
+        "onset_col": "onset"
+    },
+    "inspection": {
+        "target_date": "2019-12-11"
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "experiment_id": "1JSZ6_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612",
+    "created_at": "2026-06-12T14:37:29",
+    "date_code": "20260612",
+    "patient_id": "1JSZ6",
+    "paths": {
+        "input_npz_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-1JSZ6_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/npz",
+        "example_npz_file": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-1JSZ6_AMP200_BP0p5-48Hz_NOTCH34p5Hz_NOZSCORE_20260612/npz/1JSZ6_182_preproc_full.npz",
+        "output_root_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing",
+        "experiment_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612",
+        "normalized_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612/normalized_npz",
+        "logs_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612/logs",
+        "viz_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/1JSZ6/Pre_processing/1JSZ6_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612/seizure_visualizations"
+    },
+    "naming": {
+        "input_name": "npz",
+        "normalization_code": "GLOBALCH-NORM",
+        "channel_code": "CH2",
+        "eps_code": "EPS1e-08",
+        "date_code": "20260612"
+    },
+    "file_selection": {
+        "file_pattern": "*.npz"
+    },
+    "normalization": {
+        "normalization_type": "GLOBALCH-NORM",
+        "expected_n_channels": 2,
+        "eps": 1e-08,
+        "allow_pickle": true,
+        "metadata_keys": [
+            "mu",
+            "sigma",
+            "fs",
+            "channel_names",
+            "source_file",
+            "seizure_onsets",
+            "T0",
+            "TF"
+        ]
+    },
+    "pipeline_steps": {
+        "inspect_example_file": true,
+        "compute_global_channel_stats": true,
+        "apply_global_normalization": true,
+        "run_sanity_check": true
+    },
+    "seizure_visualization": {
+        "run_visualization": true,
+        "visualization_input_dir": "normalized_output_dir",
+        "file_suffix": "_preproc_full.npz",
+        "channel_idx_1": 0,
+        "channel_idx_2": 1,
+        "window_sec": 10,
+        "n_windows": 12,
+        "pre_onset_sec": 60,
+        "vertical_offset_uv": 20.0
+    }
+}

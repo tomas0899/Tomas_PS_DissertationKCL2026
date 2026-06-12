@@ -152,12 +152,12 @@ def create_labeling_config():
     # ------------------------------------------------------
     # PATIENT INFORMATION
     # ------------------------------------------------------
-    patient_id = "JYXFE"
+    patient_id = "10OXG"
 
     # ------------------------------------------------------
     # INPUT PATHS
     # ------------------------------------------------------
-    input_npz_dir = ("/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Pre_processing/JYXFE_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260511/normalized_npz"
+    input_npz_dir = ("/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Pre_processing/10OXG_IN-npz_GLOBALCH-NORM_CH2_EPS1e-08_20260612/normalized_npz"
     )
 
     # ------------------------------------------------------
@@ -165,13 +165,13 @@ def create_labeling_config():
     # ------------------------------------------------------
     # The user chooses this folder.
     # The script will create a specific experiment folder inside it.
-    output_root_dir = ("/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/JYXFE/Feature_ext/Part1_labeling"
+    output_root_dir = ("/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part1_labeling"
     )
 
     # ------------------------------------------------------
     # CONFIG OUTPUT FOLDER
     # ------------------------------------------------------
-    config_output_dir = ("/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/2_Feature_ext/configs"
+    config_output_dir = ("/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/src/pipelines/2_Feature_ext/configs/10OXG"
     )
 
     # ------------------------------------------------------
@@ -198,10 +198,10 @@ def create_labeling_config():
     # ------------------------------------------------------
     labeling = {
         # Preictal window range in minutes before seizure onset
-        "preictal_range_min": [-8, -5],
+        "preictal_range_min": [-6, -5],
 
         # Ictal window range in minutes after seizure onset
-        "ictal_range_min": [0, 3],
+        "ictal_range_min": [0, 1],
 
         # Whether to label gaps as interictal class 0
         "include_gap_as_interictal": True,
