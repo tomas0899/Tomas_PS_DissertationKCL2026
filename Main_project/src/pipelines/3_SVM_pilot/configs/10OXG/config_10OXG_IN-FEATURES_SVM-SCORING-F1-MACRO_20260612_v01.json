@@ -1,0 +1,90 @@
+{
+    "experiment_info": {
+        "experiment_tag": "10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01",
+        "pipeline_name": "SVM_pilot",
+        "patient_id": "10OXG",
+        "input_data_type": "FEATURES",
+        "scoring": "f1_macro",
+        "date": "20260612",
+        "version": "v01"
+    },
+    "inputs": {
+        "input_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part2_features/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01",
+        "input_filename": "10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows.pkl",
+        "input_path": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part2_features/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows.pkl",
+        "input_type": "pkl"
+    },
+    "outputs": {
+        "eval_output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01",
+        "output_prefix": "10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01",
+        "generated_config_json": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/src/pipelines/3_SVM_pilot/configs/10OXG/config_10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01.json",
+        "config_copy_json": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01/config_10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01.json",
+        "best_model_pickle": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01_best_model.pkl",
+        "best_params_json": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01_best_params.json",
+        "grid_search_results_csv": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01_grid_search_results.csv",
+        "split_summary_csv": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/SVM_pilot/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01/10OXG_IN-FEATURES_SVM-SCORING-F1-MACRO_20260612_v01_split_summary.csv"
+    },
+    "data_processing": {
+        "time_column": "window_start_time",
+        "target_column": "class_label",
+        "metadata_cols": [
+            "window_id",
+            "start_sample",
+            "end_sample",
+            "fs",
+            "n_channels",
+            "window_sec",
+            "seizure_onsets",
+            "file_name",
+            "window_start_time",
+            "window_end_time",
+            "class_label",
+            "label_name",
+            "excluded_reason"
+        ],
+        "label_mapping": {
+            "1": 0,
+            "2": 1
+        },
+        "class_names": [
+            "preictal",
+            "seizure"
+        ],
+        "labels": [
+            0,
+            1
+        ]
+    },
+    "temporal_split": {
+        "ideal_train": 0.7,
+        "ideal_val": 0.15,
+        "ideal_test": 0.15,
+        "train_search_range": [
+            0.7,
+            0.9
+        ],
+        "val_search_range": [
+            0.05,
+            0.2
+        ],
+        "ratio_weight": 3
+    },
+    "model": {
+        "model_type": "SVM",
+        "kernel": "rbf",
+        "class_weight": "balanced"
+    },
+    "grid_search": {
+        "n_splits": 4,
+        "scoring": "f1_macro",
+        "n_jobs": -1,
+        "verbose": 1
+    },
+    "evaluation": {
+        "datasets": [
+            "Validation",
+            "Test"
+        ],
+        "show_plot": false
+    }
+}

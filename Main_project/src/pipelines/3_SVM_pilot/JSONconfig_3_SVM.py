@@ -15,7 +15,7 @@ from datetime import datetime
 # ============================================================
 
 USER_INFO = {
-    "patient_id": "JYXFE",
+    "patient_id": "10OXG",
     "experiment_name": "SVM_pilot",
     "version": "v01"
 }
@@ -45,11 +45,11 @@ INPUTS = {
         / PATIENT_ID
         / "Feature_ext"
         / "Part3_PCA"
-        / "JYXFE_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01_df_features_ictalVspreictal_PCA_VAR90_20260608_v01"
+        / "10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01"
     ),
 
     # Input dataframe filename
-    "input_filename": "JYXFE_JYXFE_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260511_v01_FEAT-TIME-FREQ_20260511_v01_df_features_ictalVspreictal_PCA_VAR90_20260608_v01_df_windows_pca.pkl",
+    "input_filename": "10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01_df_windows_pca.pkl",
 
     # Input data type for automatic naming.
     # Options:

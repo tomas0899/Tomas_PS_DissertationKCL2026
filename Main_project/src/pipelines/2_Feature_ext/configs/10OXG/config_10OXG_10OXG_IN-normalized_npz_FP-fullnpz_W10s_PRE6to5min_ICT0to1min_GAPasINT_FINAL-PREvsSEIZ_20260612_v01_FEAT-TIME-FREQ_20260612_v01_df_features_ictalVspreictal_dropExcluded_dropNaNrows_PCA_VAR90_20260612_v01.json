@@ -1,0 +1,63 @@
+{
+    "metadata": {
+        "config_type": "PCA_feature_dataframe_config",
+        "created_at": "2026-06-12T21:24:46",
+        "description": "Config file for applying PCA to EEG feature dataframe."
+    },
+    "user_info": {
+        "patient_id": "10OXG",
+        "experiment_name": "features_to_pca",
+        "version": "v01"
+    },
+    "inputs": {
+        "features_input_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part2_features/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01",
+        "features_pickle_name": "10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows.pkl",
+        "features_pickle": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part2_features/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01/10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows.pkl",
+        "input_type": "pkl"
+    },
+    "outputs": {
+        "output_dir": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part3_PCA/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01",
+        "pca_dataframe_pickle": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part3_PCA/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01_df_windows_pca.pkl",
+        "explained_variance_csv": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part3_PCA/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01_explained_variance.csv",
+        "config_copy_json": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/results/10OXG/Feature_ext/Part3_PCA/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01/10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01_config.json",
+        "generated_config_json": "/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project/src/pipelines/2_Feature_ext/configs/10OXG/config_10OXG_10OXG_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260612_v01_FEAT-TIME-FREQ_20260612_v01_df_features_ictalVspreictal_dropExcluded_dropNaNrows_PCA_VAR90_20260612_v01.json"
+    },
+    "parameters": {
+        "metadata_cols": [
+            "file_name",
+            "window_id",
+            "start_sample",
+            "end_sample",
+            "fs",
+            "n_channels",
+            "window_sec",
+            "seizure_onsets",
+            "window_start_time",
+            "window_end_time",
+            "class_label",
+            "label_name",
+            "excluded_reason"
+        ],
+        "target_col": "class_label",
+        "scaling": {
+            "apply": true,
+            "method": "StandardScaler"
+        },
+        "pca": {
+            "mode": "variance_threshold",
+            "explained_variance_threshold": 0.9,
+            "fixed_n_components": null
+        },
+        "checks": {
+            "stop_if_nan": true,
+            "stop_if_inf": true,
+            "ignore_missing_metadata_cols": true,
+            "stop_if_target_missing": true
+        },
+        "save": {
+            "pca_dataframe_pickle": true,
+            "explained_variance_csv": true,
+            "config_copy_json": false
+        }
+    }
+}

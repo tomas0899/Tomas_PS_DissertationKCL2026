@@ -13,20 +13,43 @@ from datetime import datetime
 # 1. USER-DEFINED INFORMATION
 # ============================================================
 
-patient_id = "XB47Y"
 
-input_pkl_path = Path(
-    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part2_features/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01/XB47Y_IN-normalized_npz_FP-fullnpz_W10s_PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_20260504_v01_FEAT-TIME-FREQ_20260505_v01_df_features_ictalVspreictal.pkl"
+patient_id = "10OXG"
+
+project_root = Path("/home/tperezsanchez/Tomas_PS_DissertationKCL2026/Main_project")
+
+experiment_id = (
+    f"{patient_id}_IN-normalized_npz_FP-fullnpz_W10s_"
+    "PRE6to5min_ICT0to1min_GAPasINT_FINAL-PREvsSEIZ_"
+    "20260612_v01_FEAT-TIME-FREQ_20260612_v01"
 )
 
-output_dir = Path(
-    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/results/XB47Y/Feature_ext/Part3_Feat_stats"
+input_pkl_path = (
+    project_root
+    / "results"
+    / patient_id
+    / "Feature_ext"
+    / "Part2_features"
+    / experiment_id
+    / f"{experiment_id}_df_features_ictalVspreictal_dropExcluded_dropNaNrows.pkl"
 )
 
-config_output_dir = Path(
-    "/home/tperezsanchez/FoundationModel_EEG_Dissertation/Main_project/src/pipelines/2_Feature_ext/configs"
+output_dir = (
+    project_root
+    / "results"
+    / patient_id
+    / "Feature_ext"
+    / "Part3_Feat_stats"
 )
 
+config_output_dir = (
+    project_root
+    / "src"
+    / "pipelines"
+    / "2_Feature_ext"
+    / "configs"
+    / patient_id
+)
 version = "v01"
 
 alpha = 0.05
